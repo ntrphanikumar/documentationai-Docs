@@ -1,0 +1,114 @@
+---
+title: Authentication
+description: Learn how to authenticate and manage access to Videograph (Docs)
+---
+
+## Authentication Methods
+
+Videograph (Docs) supports multiple authentication methods to ensure secure access to your documentation. Choose the method that best fits your organization's security requirements and user management preferences.
+
+<Columns cols={2}>
+  <Card title="Single Sign-On" icon="shield" href="#sso">
+    Integrate with your identity provider for seamless authentication.
+  </Card>
+  <Card title="API Keys" icon="key" href="#api-keys">
+    Generate and manage API keys for programmatic access.
+  </Card>
+</Columns>
+
+## Setting Up SSO
+
+Single Sign-On (SSO) allows your team members to access Videograph (Docs) using their existing corporate credentials. This reduces password fatigue and simplifies user management.
+
+<Steps>
+  <Step title="Choose Provider" icon="settings">
+    Select your identity provider from supported options including Okta, Azure AD, Google Workspace, and SAML 2.0.
+  </Step>
+  <Step title="Configure Settings" icon="sliders">
+    Enter your provider's configuration details such as entity ID, SSO URL, and certificate.
+  </Step>
+  <Step title="Test Connection" icon="check-circle">
+    Verify the integration works correctly by testing the login flow.
+  </Step>
+  <Step title="Enable for Users" icon="users">
+    Assign the SSO authentication method to your workspace users.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Note: SSO setup requires administrative privileges and may take up to 24 hours for full propagation.
+</Callout>
+
+## API Key Management
+
+API keys provide secure programmatic access to Videograph (Docs) resources. Use API keys for integrations, automation scripts, and third-party applications.
+
+<Tabs>
+  <Tab title="Generating Keys" icon="plus">
+    To generate a new API key, navigate to Settings > API Keys and click "Create New Key". Choose appropriate permissions and set an expiration date if needed.
+  </Tab>
+  <Tab title="Managing Keys" icon="settings">
+    View all active API keys, revoke compromised keys, and monitor usage statistics. Each key shows creation date, last used timestamp, and associated permissions.
+  </Tab>
+  <Tab title="Best Practices" icon="shield">
+    Rotate keys regularly, use environment variables for storage, and monitor for unusual activity. Never commit API keys to version control systems.
+  </Tab>
+</Tabs>
+
+<CodeGroup tabs="JavaScript,Python">
+  ```javascript
+// Authenticate with API key
+const headers = {
+  'Authorization': `Bearer ${process.env.VIDEOGRAPH_API_KEY}`,
+  'Content-Type': 'application/json'
+};
+
+fetch('/api/documents', { headers })
+  .then(response => response.json())
+  .then(data => console.log(data));
+  ```
+  ```python
+import os
+import requests
+
+api_key = os.getenv('VIDEOGRAPH_API_KEY')
+headers = {
+    'Authorization': f'Bearer {api_key}',
+    'Content-Type': 'application/json'
+}
+
+response = requests.get('/api/documents', headers=headers)
+print(response.json())
+  ```
+</CodeGroup>
+
+<ExpandableGroup>
+  <Expandable title="What permissions can I assign to API keys?" default-open="false">
+    API keys support granular permissions including read-only access, document creation, editing rights, workspace management, and administrative controls. You can create custom permission sets or use predefined roles like Viewer, Editor, and Admin.
+  </Expandable>
+  <Expandable title="How do I revoke an API key?" default-open="false">
+    Go to Settings > API Keys, find the key you want to revoke, and click the "Revoke" button. Revoked keys become invalid immediately and cannot be restored. You'll need to generate a new key and update any integrations.
+  </Expandable>
+  <Expandable title="Can I use both SSO and API keys?" default-open="false">
+    Yes, you can use SSO for user authentication while still using API keys for programmatic access. API keys are separate from user accounts and maintain their own permission sets.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="danger">
+  Security warning: Never share API keys publicly or store them in insecure locations. Use environment variables and rotate keys regularly to maintain security.
+</Callout>
+
+## User Roles and Permissions
+
+Videograph (Docs) uses a role-based access control system to manage user permissions within workspaces and documents.
+
+| Role | Description | Permissions |
+|------|-------------|-------------|
+| Viewer | Read-only access | View documents, search content |
+| Editor | Standard editing | View, edit, create documents |
+| Admin | Full control | All editor permissions plus user management, settings |
+| Owner | Ultimate control | All admin permissions plus billing, workspace deletion |
+
+<Callout kind="tip">
+  Assign the minimum required permissions for each user to follow the principle of least privilege.
+</Callout>

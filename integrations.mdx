@@ -1,0 +1,131 @@
+---
+title: Integrations
+description: Connect Videograph (Docs) with your favorite tools and workflows
+---
+
+## Integration Overview
+
+Videograph (Docs) integrates seamlessly with popular development and productivity tools to streamline your documentation workflow. Connect your documentation to your existing toolchain for automated updates and improved collaboration.
+
+<Columns cols={2}>
+  <Card title="Git Integration" icon="git-branch" href="#git">
+    Sync documentation with your Git repositories.
+  </Card>
+  <Card title="Slack Integration" icon="message-square" href="#slack">
+    Get notifications and updates in Slack.
+  </Card>
+</Columns>
+
+## GitHub Integration
+
+Automatically sync documentation changes with your GitHub repositories. Keep your docs in sync with your code changes and release cycles.
+
+<Steps>
+  <Step title="Connect Repository" icon="link">
+    Authorize Videograph (Docs) to access your GitHub account and select repositories to connect.
+  </Step>
+  <Step title="Configure Sync" icon="settings">
+    Choose which branches and folders to sync. Set up automatic syncing on pushes or pull requests.
+  </Step>
+  <Step title="Map Documents" icon="file-text">
+    Map repository files to Videograph (Docs) documents. Use file paths or patterns for automatic mapping.
+  </Step>
+  <Step title="Test Integration" icon="check-circle">
+    Verify the connection works by making a test change in your repository.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  GitHub integration supports Markdown files, README files, and custom documentation folders.
+</Callout>
+
+## Webhook Integration
+
+Use webhooks to trigger actions in Videograph (Docs) based on events in your other tools. Automate document updates and notifications.
+
+<Tabs>
+  <Tab title="Creating Webhooks" icon="webhook">
+    Go to Settings > Integrations > Webhooks and create a new webhook endpoint. Choose the events you want to listen for.
+  </Tab>
+  <Tab title="Supported Events" icon="bell">
+    Receive notifications for document creation, updates, publishing, and user activities. Customize payloads for each event type.
+  </Tab>
+  <Tab title="Security" icon="shield">
+    Webhooks include signature verification to ensure authenticity. Use HTTPS endpoints for secure communication.
+  </Tab>
+</Tabs>
+
+<CodeGroup tabs="Webhook Payload,JavaScript Handler">
+  ```json
+{
+  "event": "document.updated",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "document_id": "doc-123",
+    "title": "API Reference",
+    "author": "john.doe@company.com",
+    "changes": [
+      "Updated endpoint descriptions",
+      "Added new parameters"
+    ]
+  },
+  "signature": "sha256=abc123..."
+}
+  ```
+  ```javascript
+const crypto = require('crypto');
+
+function verifyWebhook(payload, signature, secret) {
+  const expectedSignature = crypto
+    .createHmac('sha256', secret)
+    .update(JSON.stringify(payload))
+    .digest('hex');
+  
+  return crypto.timingSafeEqual(
+    Buffer.from(signature, 'hex'),
+    Buffer.from(expectedSignature, 'hex')
+  );
+}
+
+app.post('/webhook', (req, res) => {
+  const isValid = verifyWebhook(req.body, req.headers['x-signature'], process.env.WEBHOOK_SECRET);
+  if (!isValid) return res.status(401).send('Invalid signature');
+  
+  // Process the webhook
+  console.log('Document updated:', req.body.data);
+  res.sendStatus(200);
+});
+  ```
+</CodeGroup>
+
+<ExpandableGroup>
+  <Expandable title="Which tools support webhooks?" default-open="false">
+    Videograph (Docs) can send webhooks to any HTTPS endpoint. This works with tools like Zapier, custom scripts, CI/CD pipelines, and notification systems.
+  </Expandable>
+  <Expandable title="How do I troubleshoot webhook issues?" default-open="false">
+    Check the webhook logs in your Videograph (Docs) dashboard. Verify your endpoint is accessible, returns a 200 status code within 10 seconds, and properly validates signatures.
+  </Expandable>
+  <Expandable title="Can I customize webhook payloads?" default-open="false">
+    Yes, you can select which fields to include in webhook payloads. Use filters to only send notifications for specific documents or events.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="tip">
+  Use Zapier or similar automation tools to connect Videograph (Docs) with hundreds of other applications without coding.
+</Callout>
+
+## API Integration
+
+Build custom integrations using our comprehensive REST API. Access all Videograph (Docs) features programmatically.
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/documents` | GET | List documents |
+| `/api/documents` | POST | Create document |
+| `/api/documents/{id}` | PUT | Update document |
+| `/api/workspaces` | GET | List workspaces |
+| `/api/users` | GET | List users |
+
+<Callout kind="success">
+  Our API includes comprehensive documentation and code examples in multiple languages.
+</Callout>

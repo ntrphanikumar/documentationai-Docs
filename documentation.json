@@ -1,0 +1,84 @@
+{
+  "name": "Videograph (Docs) Documentation",
+  "initialRoute": "introduction",
+  "colors": {
+    "light": {
+      "brand": "#3B82F6",
+      "heading": "#1a1a1a",
+      "text": "#374151"
+    },
+    "dark": {
+      "brand": "#60A5FA",
+      "heading": "#f2f2f2",
+      "text": "#c1c1c1"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "icon": "book",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "icon": "rocket",
+            "pages": [
+              {
+                "title": "Introduction",
+                "path": "introduction",
+                "icon": "star"
+              }
+            ]
+          },
+          {
+            "group": "Core Features",
+            "icon": "settings",
+            "pages": [
+              {
+                "title": "Authentication",
+                "path": "authentication",
+                "icon": "key"
+              },
+              {
+                "title": "Managing Documents",
+                "path": "managing-documents",
+                "icon": "file-text"
+              },
+              {
+                "title": "Integrations",
+                "path": "integrations",
+                "icon": "link"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "icon": "code",
+        "groups": [
+          {
+            "group": "Endpoints",
+            "icon": "terminal",
+            "openapi": "openapi.yaml"
+          }
+        ]
+      },
+      {
+        "tab": "Changelog",
+        "icon": "clock",
+        "pages": [
+          {
+            "title": "Release History",
+            "path": "changelog",
+            "icon": "history"
+          }
+        ]
+      }
+    ]
+  },
+  "seo": {
+    "robots:index": true,
+    "robots:follow": true
+  }
+}

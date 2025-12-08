@@ -1,0 +1,117 @@
+---
+title: Introduction
+description: Overview of Videograph (Docs) and its core capabilities
+---
+
+## Getting Started with Videograph (Docs)
+
+Videograph (Docs) is a comprehensive documentation management platform designed to help teams organize, collaborate, and publish project documentation efficiently. Whether you're building software, managing internal knowledge bases, or creating user guides, Videograph (Docs) provides the tools you need to create professional documentation that scales with your organization.
+
+<Columns cols={3}>
+  <Card title="Quick Setup" icon="zap" href="#quick-setup">
+    Get started in minutes with our guided setup process.
+  </Card>
+  <Card title="Document Management" icon="file-text" href="#document-management">
+    Organize and manage all your documentation in one place.
+  </Card>
+  <Card title="Collaboration" icon="users" href="#collaboration">
+    Work together seamlessly with your team.
+  </Card>
+</Columns>
+
+## Key Features
+
+Videograph (Docs) offers powerful features to streamline your documentation workflow:
+
+- **Centralized Documentation Hub**: Store all project documentation in a single, searchable repository
+- **Real-time Collaboration**: Multiple team members can edit documents simultaneously
+- **Version Control**: Track changes and maintain document history
+- **Rich Text Editing**: Create beautiful documents with images, tables, and embedded content
+- **Access Control**: Manage permissions and sharing with granular controls
+- **API Integration**: Connect with your existing tools and workflows
+
+<Tabs>
+  <Tab title="Web Interface" icon="monitor">
+    Access Videograph (Docs) through our intuitive web dashboard. Create, edit, and organize documents with drag-and-drop simplicity. The web interface includes live preview, collaborative editing, and advanced formatting options.
+  </Tab>
+  <Tab title="API" icon="code">
+    Integrate documentation management into your development workflow using our REST API. Automate document creation, updates, and retrieval programmatically.
+  </Tab>
+  <Tab title="Mobile" icon="smartphone">
+    Review and edit documents on-the-go with our mobile app. Stay productive whether you're in the office or on the road.
+  </Tab>
+</Tabs>
+
+<Steps>
+  <Step title="Create Account" icon="user-plus">
+    Sign up for a free account at videograph-docs.com and verify your email address.
+  </Step>
+  <Step title="Set Up Workspace" icon="folder-plus">
+    Create your first workspace and invite team members to collaborate.
+  </Step>
+  <Step title="Import Documents" icon="upload">
+    Upload existing documentation or start creating new documents from scratch.
+  </Step>
+  <Step title="Configure Permissions" icon="shield">
+    Set up access controls and sharing permissions for your documents.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Tip: Start with our guided tour to familiarize yourself with all features and best practices.
+</Callout>
+
+<ExpandableGroup>
+  <Expandable title="What types of documents can I manage?" default-open="false">
+    Videograph (Docs) supports all common documentation formats including API references, user guides, technical specifications, knowledge base articles, release notes, and more. You can import existing Markdown files, Word documents, or start fresh with our rich text editor.
+  </Expandable>
+  <Expandable title="Is my data secure?" default-open="false">
+    Yes, security is our top priority. All data is encrypted in transit and at rest. We offer enterprise-grade security features including SSO integration, audit logs, and compliance with industry standards like GDPR and SOC 2.
+  </Expandable>
+</ExpandableGroup>
+
+<CodeGroup tabs="JavaScript,Python,cURL">
+  ```javascript
+// Create a new document via API
+const response = await fetch('/api/documents', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    title: 'My New Document',
+    content: '# Welcome to Videograph (Docs)'
+  })
+});
+  ```
+  ```python
+import requests
+
+response = requests.post(
+    '/api/documents',
+    headers={
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer YOUR_API_KEY'
+    },
+    json={
+        'title': 'My New Document',
+        'content': '# Welcome to Videograph (Docs)'
+    }
+)
+  ```
+  ```bash
+curl -X POST \
+  /api/documents \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer YOUR_API_KEY' \
+  -d '{
+    "title": "My New Document",
+    "content": "# Welcome to Videograph (Docs)"
+  }'
+  ```
+</CodeGroup>
+
+<Callout kind="tip">
+  Pro tip: Use our keyboard shortcuts for faster editing. Press Ctrl+S to save, Ctrl+K for search, and Ctrl+Shift+P for the command palette.
+</Callout>

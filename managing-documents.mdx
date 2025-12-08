@@ -1,0 +1,120 @@
+---
+title: Managing Documents
+description: Best practices for organizing and managing documentation in Videograph (Docs)
+---
+
+## Document Organization
+
+Effective document management starts with a well-structured organization system. Videograph (Docs) provides flexible tools to categorize, tag, and organize your documentation for easy discovery and maintenance.
+
+<Columns cols={3}>
+  <Card title="Folders" icon="folder" href="#folders">
+    Create hierarchical folder structures for logical organization.
+  </Card>
+  <Card title="Tags" icon="tag" href="#tags">
+    Use tags for flexible categorization and cross-referencing.
+  </Card>
+  <Card title="Collections" icon="layers" href="#collections">
+    Group related documents into curated collections.
+  </Card>
+</Columns>
+
+## Creating and Editing Documents
+
+Videograph (Docs) offers a rich editing experience with support for various content types and collaborative features.
+
+<Steps>
+  <Step title="Create New Document" icon="plus">
+    Click the "New Document" button and select your preferred format (Markdown, Rich Text, or Import).
+  </Step>
+  <Step title="Add Content" icon="edit">
+    Use the toolbar to add headings, lists, images, tables, and other elements. The editor supports drag-and-drop for images and files.
+  </Step>
+  <Step title="Format and Style" icon="palette">
+    Apply consistent formatting using styles, themes, and custom CSS. Preview changes in real-time.
+  </Step>
+  <Step title="Save and Publish" icon="save">
+    Save drafts or publish documents immediately. Set visibility and sharing options before publishing.
+  </Step>
+</Steps>
+
+<Callout kind="info">
+  Auto-save prevents data loss. Your work is automatically saved every 30 seconds.
+</Callout>
+
+## Version Control and History
+
+Track changes over time and maintain document history with our built-in version control system.
+
+<Tabs>
+  <Tab title="Viewing History" icon="clock">
+    Access the version history panel to see all changes, who made them, and when. Compare versions side-by-side.
+  </Tab>
+  <Tab title="Restoring Versions" icon="refresh-cw">
+    Restore previous versions with one click. Create new branches for experimental changes.
+  </Tab>
+  <Tab title="Collaborative Editing" icon="users">
+    See live cursors and edits from other users. Resolve conflicts automatically or manually.
+  </Tab>
+</Tabs>
+
+<CodeGroup tabs="Markdown,Rich Text API">
+  ```markdown
+# Document Title
+
+## Section Header
+
+This is a paragraph with **bold** and *italic* text.
+
+- List item 1
+- List item 2
+
+| Column 1 | Column 2 |
+|----------|----------|
+| Data 1   | Data 2   |
+
+```javascript
+console.log('Code block');
+```
+  ```
+// Create document via API
+{
+  "title": "API Documentation",
+  "content": "# API Reference\n\nThis document covers our REST API endpoints.",
+  "format": "markdown",
+  "tags": ["api", "reference"],
+  "folder_id": "folder-123"
+}
+  ```
+</CodeGroup>
+
+<ExpandableGroup>
+  <Expandable title="How do I import existing documents?" default-open="false">
+    Use the import feature to upload Markdown files, Word documents, or HTML files. The system will convert them to our native format while preserving formatting and structure.
+  </Expandable>
+  <Expandable title="Can I export documents?" default-open="false">
+    Yes, export documents as PDF, HTML, Markdown, or Word files. You can also export entire folders or collections as ZIP archives.
+  </Expandable>
+  <Expandable title="What's the difference between drafts and published documents?" default-open="false">
+    Drafts are private and only visible to editors and admins. Published documents are live and accessible based on their sharing settings. You can have multiple drafts of the same document.
+  </Expandable>
+</ExpandableGroup>
+
+<Callout kind="tip">
+  Use templates to maintain consistency across similar documents. Create templates for API docs, user guides, and release notes.
+</Callout>
+
+## Search and Discovery
+
+Find documents quickly with our powerful search and filtering capabilities.
+
+| Search Feature | Description |
+|----------------|-------------|
+| Full-text search | Search within document content, titles, and metadata |
+| Filter by tags | Narrow results using tags and categories |
+| Advanced filters | Filter by author, date modified, file type, and more |
+| Saved searches | Save frequently used search queries |
+
+<Callout kind="success">
+  Search supports boolean operators, wildcards, and fuzzy matching for comprehensive discovery.
+</Callout>
