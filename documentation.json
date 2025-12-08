@@ -342,7 +342,7 @@
         "title": "Sign in",
         "link": "https://dashboard.videograph.ai/signin"
       },
-      "secondary": {
+      "links": {
         "title": "Support",
         "link": "mailto:support@videograph.ai"
       }
