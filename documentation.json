@@ -342,10 +342,12 @@
         "title": "Sign in",
         "link": "https://dashboard.videograph.ai/signin"
       },
-      "links": {
-        "title": "Support",
-        "link": "mailto:support@videograph.ai"
-      }
+      "links": [
+        {
+          "title": "Support",
+          "link": "mailto:support@videograph.ai"
+        }
+      ]
     }
   }
 }
