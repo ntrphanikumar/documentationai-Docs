@@ -1,0 +1,56 @@
+---
+title: "Overview of SSAI & FAST Channels"
+description: "High-level concepts of server-side ad insertion and FAST channels, and how Videograph simplifies monetization for ad-supported streaming."
+---
+
+## Introduction
+
+Server-side ad insertion, often referred to as SSAI, is a monetization model where ads are stitched directly into video streams on the server. This approach offers a seamless playback experience and is widely used in Free Ad-Supported TV, or FAST, channels where linear streams are built from video-on-demand assets and live feeds.
+
+Videograph provides an integrated workflow that simplifies how you prepare content, trigger ad breaks, and work with ad servers so you can focus on programming and revenue strategy instead of ad tech plumbing.
+
+<Callout kind="info">
+
+When deciding between SSAI and client-side ads, consider SSAI for consistent playback across devices, ad-block resilience, and linear channel experiences. Client-side ads may be suitable when you need precise client-level interaction tracking or highly dynamic ad behavior.
+
+</Callout>
+
+## What SSAI is and why it matters
+
+Server-side ad insertion works by stitching ads into the stream before it reaches the viewer. This eliminates ad stitching in the player and reduces errors caused by device differences or network instability.
+
+Key ideas:
+
+- Ads are delivered as part of the same stream as the content.
+- Playback feels consistent because viewers never leave the main playback timeline.
+- SCTE markers and VAST tags help define where ad breaks occur and how ads are selected.
+- SSAI is especially useful for apps with wide device fragmentation or strict quality requirements.
+
+Videograph supports SSAI setups that work with SCTE markers and certified ad networks. It also provides analytics to understand ad performance across your channels.
+
+## FAST channels at a glance
+
+FAST channels present linear programming built from a mix of assets and live events. They allow you to create continuous streams without needing traditional broadcast infrastructure.
+
+Characteristics:
+
+- Channels are scheduled programmatically with playlists or automated rotation.
+- Viewers watch the linear feed rather than selecting individual videos.
+- Ad breaks are a central monetization mechanism; SSAI ensures those breaks behave consistently.
+
+FAST has become a major distribution format for reach-focused publishers, and strong ad insertion capabilities are essential for revenue.
+
+## How Videograph connects SSAI and FAST
+
+Videograph brings SSAI and FAST together through unified workflows:
+
+- You can convert a channel to SSAI with minimal setup, enabling ad-supported playback almost immediately.
+- SCTE-based ad breaks can be configured once and applied across your channels and rotations.
+- Integrations with certified ad servers simplify how you manage VAST tags and ad rules.
+- Analytics help measure fill rates, impressions, and performance trends across channels.
+
+If you want to implement advanced targeting or manage detailed ad delivery logic, see the related pages:
+
+- [Configuring Dynamic Ad Insertion](/ssai-configuring)
+- [Ad Rules, Targeting & Validation](/ssai-rules-targeting)
+- [Ad Revenue Analytics](/ssai-analytics)

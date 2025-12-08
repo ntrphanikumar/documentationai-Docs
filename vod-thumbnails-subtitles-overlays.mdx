@@ -1,0 +1,82 @@
+---
+title: "Thumbnails, Subtitles & Overlays"
+description: "How Videograph handles thumbnails, subtitles, and graphic overlays for VOD assets."
+---
+
+## Overview
+
+Videograph supports several visual and accessibility enhancements for on‑demand video. These include:
+
+- Automatically generated or custom thumbnails for discovery and player UI.
+- Subtitles and captions provided through standard sidecar files.
+- Graphic overlays for branding or informational elements.
+
+<Callout kind="info">
+
+These features are typically applied during ingest or asset configuration. For an overview of how assets move through the system, see [Video Pipeline: Ingest, Process, Deliver](/core-video-pipeline).
+
+</Callout>
+
+## Thumbnails
+
+Videograph creates thumbnails automatically at ingest, or you can upload your own.
+
+### Automatic thumbnails
+
+- A poster image is generated during ingest.
+- Useful when you do not have a custom design ready.
+- Ensures every asset has a baseline visual preview.
+
+### Custom thumbnails
+
+- You can upload a custom poster image during or after ingest.
+- Recommended when you need brand consistency or editorial control.
+
+### Recommended specifications
+
+- Use a high‑resolution image with a 16:9 aspect ratio.
+- Keep the file size optimized for fast loading while maintaining clarity.
+- Prefer formats like PNG or JPEG.
+
+## Subtitles
+
+Videograph works with sidecar subtitle files that are attached as caption tracks.
+
+### Supported formats
+
+- WebVTT is the standard supported format for captions.
+- Provide one file per language track.
+
+### Ingestion options
+
+- Upload subtitle files alongside the primary video during ingest.
+- Add or update tracks after ingest from your management workflow.
+
+### Language tracks
+
+Each caption track should include:
+
+- A language code (for example, `en`, `es`, `fr`).
+- A clear label for use in players or UI.
+
+## Overlays
+
+Graphic overlays let you place visual elements on top of video for branding or context.
+
+### What overlays can include
+
+- Channel bugs or watermarks.
+- Lower thirds or titles.
+- Time‑based graphics that appear only at specific moments.
+
+### How Videograph handles overlays
+
+- Overlays can be persistent or time‑based.
+- They are driven by templates or rules applied during processing.
+
+## Best practices
+
+- Provide subtitles for accessibility and compliance wherever possible.
+- Use high‑contrast, legible text in overlays.
+- Keep overlays lightweight to avoid obscuring critical content.
+- Maintain a consistent style across thumbnails for strong brand recognition.

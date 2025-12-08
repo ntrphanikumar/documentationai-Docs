@@ -1,0 +1,111 @@
+---
+title: "Accounts, Workspaces & Roles"
+description: "Learn how accounts, workspaces, and user roles structure access and permissions in Videograph across the dashboard and API."
+---
+
+## Overview
+
+Videograph uses a flexible account model that supports organizations of any size, from individual developers to large OTT teams. This page explains how accounts, workspaces, and user roles work together to govern dashboard access and API behavior.
+
+<Callout kind="info">
+
+For authentication details and how tokens interact with these entities, see the [Authentication & Authorization](/authentication) page.
+
+</Callout>
+
+<Columns cols={3}>
+  <Card title="Accounts" icon="users" href="#accounts">
+    Understand the root identity for users and teams.
+  </Card>
+  <Card title="Workspaces" icon="folder" href="#workspaces-and-organizations">
+    Learn how projects, video libraries, and settings are scoped.
+  </Card>
+  <Card title="Roles & Permissions" icon="shield" href="#roles-and-permissions">
+    See how access control applies across dashboard and API.
+  </Card>
+</Columns>
+
+## Accounts
+
+An account represents an individual user with access to the Videograph dashboard and API. Every user signs in with a personal account, which can belong to one or more workspaces.
+
+### Key points
+
+- Account identity is tied to authentication credentials.  
+- Permissions are not assigned at the account level but through roles within each workspace.  
+- Multiple accounts can collaborate in the same workspace.
+
+## Workspaces and organizations
+
+Workspaces (sometimes called organizations) are the primary container for your video operations. They hold all VOD assets, live streams, channels, metadata, SSAI configurations, API keys, and analytics.
+
+### Workspace behavior
+
+- Each workspace has its own API keys.  
+- API requests are always scoped to a single workspace.  
+- Dashboard visibility and editing rights depend on your role inside that workspace.
+
+```json
+{
+  "workspace_id": "ws_12345",
+  "name": "Production",
+  "resources": {
+    "assets": 128,
+    "live_streams": 4,
+    "channels": 2
+  }
+}
+```
+
+<Callout kind="tip">
+
+Use separate workspaces for development, staging, and production when running complex pipelines.
+
+</Callout>
+
+## Roles and permissions
+
+Roles determine what a user can do inside a workspace. They govern dashboard capabilities and API access via workspace‑scoped keys.
+
+### Common role patterns
+
+Below is a simplified example of typical permissions. Real permissions vary by workspace configuration, but this model captures the core pattern.
+
+| Role | Create/update video assets | Manage live streams | Manage SSAI/ads | Manage workspace settings |
+|------|-----------------------------|---------------------|------------------|----------------------------|
+| Viewer | No | No | No | No |
+| Editor | Yes | Yes | Limited | No |
+| Admin | Yes | Yes | Yes | Yes |
+
+## Recommended setups
+
+Use these patterns as a starting point when organizing teams.
+
+### Small teams
+
+- One workspace for all environments.  
+- One or two admins.  
+- Everyone else as editors.
+
+### Larger engineering and OTT operations
+
+<Columns cols={2}>
+  <Card title="Separate environments" icon="layers" href="#recommended-setups">
+    Create development, staging, and production workspaces.
+  </Card>
+  <Card title="Granular control" icon="settings" href="#recommended-setups">
+    Assign admin roles only to platform or DevOps teams.
+  </Card>
+</Columns>
+
+### Typical grouping
+
+- Developers: editor access to development workspace.  
+- Operators and media managers: editor access to staging and production.  
+- Admins: full rights across all workspaces to configure SSAI, webhooks, and access policies.
+
+<Callout kind="success">
+
+Once your workspaces and roles are set, continue with the [Quickstart: First On-Demand Video](/quickstart-first-vod) guide.
+
+</Callout>

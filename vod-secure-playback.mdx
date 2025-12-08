@@ -1,0 +1,92 @@
+---
+title: Secure Playback
+description: Learn how to protect VOD assets using tokenized URLs, domain restrictions, and optional DRM within Videograph.
+---
+
+## Overview
+
+Secure playback ensures that only authorized viewers can access your Video on Demand content. Videograph supports several layers of protection, including token-based playback URLs, domain or referrer restrictions, and optional DRM integration for higher sensitivity use cases.
+
+This page introduces the core threat model and the main controls you can use to harden playback flows.
+
+## Threat model overview
+
+When distributing VOD content, you may need to defend against:
+
+- Link sharing: viewers redistributing a valid playback URL.
+- Hotlinking: third-party sites embedding your player without permission.
+- Unauthorized embeds in apps or platforms you do not control.
+- Automated scraping or replay attacks against publicly exposed URLs.
+
+Videograph's authorization controls help you prevent these issues when combined with your application's authentication logic and network policies.
+
+## Tokenized playback URLs
+
+Tokenized or signed playback URLs let you embed authorization constraints directly in the playback request. Use them to enforce rules such as:
+
+- Expiration windows
+- Allowed IP ranges
+- Allowed domains
+- Access scopes for specific assets or playlists
+
+A typical flow is your backend issuing a short-lived playback URL or token for the asset your user is approved to watch.
+
+<Callout kind="danger">
+
+  Never place signing secrets, private keys, or token generation logic in client-side code. Perform all signing on a secured backend and rotate secrets regularly.
+
+</Callout>
+
+### Example token payload
+
+Below is a simplified pseudo-JSON example of the type of claims your backend might include when generating a signed URL or token:
+
+```json
+{
+  "asset_id": "vid_123",
+  "expires_at": 1714050000,
+  "ip_allow": ["203.0.113.0/24"],
+  "domain_allow": ["example.com"]
+}
+```
+
+### Basic backend issuance pattern
+
+1. Authenticate the viewer in your application.
+2. Check authorization for the specific VOD asset.
+3. Generate a signed playback URL or token with a short expiration time.
+4. Embed the URL in your player or return it to your frontend for immediate playback.
+
+## Domain and referrer restrictions
+
+Domain or referrer checks let you limit playback to approved origins even when tokenized URLs leak. These restrictions help mitigate:
+
+- Unauthorized iframe embeds
+- Deep-linking from untrusted sites
+- Player reuse on mirrored or cloned domains
+
+You can combine domain restrictions with signed URLs to create multi-factor authorization: the request must present a valid token and originate from an approved domain.
+
+## DRM and advanced controls
+
+For higher-security use cases, Videograph can integrate with DRM systems. DRM ensures that only authorized devices with valid licenses can decrypt and view your content.
+
+Common scenarios include:
+
+- Premium subscription video
+- Early-release content requiring device-level enforcement
+- Environments needing hardware-backed key protection
+
+While Videograph does not mandate a specific DRM provider, the general model involves license servers, encrypted content keys, and device-level enforcement. Pairing DRM with tokenized URLs and origin checks provides a layered defense.
+
+## Best practices checklist
+
+Use this quick checklist when designing a secure VOD playback system:
+
+- Generate signed playback URLs or tokens on a secure backend only.
+- Keep token lifetimes short and include restrictive claims such as domain and IP allowlists.
+- Validate referrers or permitted domains whenever possible.
+- Consider DRM for high-value or regulatory-sensitive content.
+- Rotate secrets periodically and store them securely.
+- Combine playback authorization with your application authentication system.
+- Monitor logs and audit suspicious playback behavior.

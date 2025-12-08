@@ -1,0 +1,67 @@
+---
+title: "Live Stream Basics"
+description: "Key concepts for understanding ingest, lifecycle states, latency, and playback behavior for live streaming in Videograph."
+---
+
+## Overview
+
+A live stream in Videograph represents an ingest endpoint plus the configuration and state that control how real‑time video is processed and delivered. Encoders publish RTMP or SRT to the ingest URL, Videograph processes segments as they arrive, and viewers receive adaptive HLS output.
+
+<Callout kind="info">
+
+You can safely experiment with live stream creation and encoder settings in a non‑production workspace before going live for end users.
+
+</Callout>
+
+Live streams can optionally be recorded and later converted into VOD assets. For details on the broader media pipeline, see [Video Pipeline: Ingest, Process, Deliver](/core-video-pipeline).
+
+## Live stream lifecycle
+
+A stream transitions through several states as it moves from idle to live output:
+
+- **idle**: The stream exists but is not expecting or receiving input.
+- **waiting_for_input**: Videograph is ready for incoming media but has not yet detected a valid signal.
+- **live**: Segments are being ingested and processed; playback is available to viewers.
+- **stopping**: The encoder has disconnected and Videograph is finalizing segments.
+- **ended**: Live processing has completed.
+
+### Minimal state diagram (text form)
+
+```
+idle
+  ↓
+waiting_for_input
+  ↓
+live
+  ↓
+stopping
+  ↓
+ended
+```
+
+## Ingest options
+
+Videograph supports industry‑standard publish protocols:
+
+- **RTMP**: Common in hardware and software encoders; suitable for most workflows.
+- **SRT**: Provides improved resilience on unstable networks and better error recovery.
+
+When you create a live stream, Videograph generates one or more ingest URLs. Configure your encoder to use the endpoint along with any required stream key.
+
+### Considerations for ingest setup
+
+- Monitor encoder bitrate and network stability.
+- Ensure the encoder uses a supported container and codec configuration (for example, H.264 and AAC).
+- Maintain time‑synchronized audio and video to prevent drift.
+
+## Playback behavior
+
+Once the stream enters the **live** state, Videograph generates HLS output variants. A player selects the appropriate rendition and updates segments as they appear.
+
+Key playback characteristics:
+
+- **Adaptive formats**: Viewers receive HLS segments that adapt to network conditions.
+- **Startup time**: Initial playback may require a short buffer of segments.
+- **Latency**: End‑to‑end latency depends on encoder configuration, segment duration, and player buffering. Shorter segment durations can reduce latency but may increase overhead.
+
+For details on using Videograph players or embedding playback in your application, see [Players, SDKs & Embeds](/players-sdks-embeds).

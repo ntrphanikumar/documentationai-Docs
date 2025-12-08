@@ -1,0 +1,74 @@
+---
+title: Metadata, Tags & Organization
+description: Learn how to describe and organize VOD assets in Videograph using core metadata fields, tags, and organizational structures like playlists, channels, and workspaces.
+---
+
+## Why metadata matters
+
+Metadata helps you make video catalogs searchable, sortable, and maintainable at scale. Videograph supports structured fields such as title, description, duration, and thumbnails, along with flexible custom key-value pairs for business-specific data. Tags offer lightweight labeling for search, recommendations, and workflow grouping.
+
+## Core metadata fields
+
+Common fields you can set on an asset include:
+
+- Title and short description
+- Duration and thumbnails
+- Season and episode identifiers
+- Rating or content classification
+- Custom key-value fields for editorial, rights, or workflow needs
+
+These fields travel with the asset across the ingest, processing, and delivery pipeline.
+
+## Tags and taxonomies
+
+Tags allow fast, lightweight labeling so you can:
+
+- Power faceted search in internal tools or apps
+- Enable recommendation engines
+- Drive workflows such as QC, editorial review, or rights checks
+
+Tags can be flat or implemented as internal taxonomies you maintain. Use consistent naming patterns to keep catalogs clean.
+
+<Callout kind="info">
+
+  Consistency is key. Align naming, casing, and tag patterns across teams to ensure your catalog stays discoverable and predictable.
+
+</Callout>
+
+## Organizational patterns
+
+Videograph assets can be grouped into several structures:
+
+### Playlists
+
+Use playlists to present ordered collections of assets, such as episodes, modules, or themed bundles. They are ideal when sequence or curation matters.
+
+### Channels
+
+Channels act as logical groupings that can mix live streams and VOD assets. They help organize content by brand, category, or theme.
+
+### Workspaces
+
+Workspaces often map to environments or business units. They isolate assets, channels, and playlists so teams can work independently while keeping governance clear.
+
+## Example asset metadata
+
+Below is a simplified example showing structured metadata and tags on a single asset.
+
+```json
+{
+  "title": "Episode 3: The Journey",
+  "description": "Exploring the next chapter of the story.",
+  "duration": 1420,
+  "season": 1,
+  "episode": 3,
+  "thumbnails": [
+    "https://cdn.example.com/thumbs/ep3-small.jpg"
+  ],
+  "custom": {
+    "rating": "PG-13",
+    "rightsRegion": "US"
+  },
+  "tags": ["adventure", "featured", "season1"]
+}
+```

@@ -1,0 +1,88 @@
+---
+title: "Quickstart: First On-Demand Video"
+description: "Upload your first MP4 to Videograph and play it back through a simple embed."
+---
+
+## Overview
+
+This quickstart shows you how to upload a single MP4 file, wait for processing, and then play it back using a basic embed. The flow reflects Videograph ingest and playback behavior: authenticate with an API key, POST a video for ingestion, poll for processing completion, then use the returned playback URL in your client.
+
+## Prerequisites
+
+- A Videograph account  
+- An API key (see the authentication guide at [/authentication](/authentication))  
+- A local MP4 file to upload
+
+## Steps
+
+<Steps>
+  <Step title="Upload a video via API" icon="upload-cloud">
+
+    Use a POST request to send your MP4 file to Videograph. The request returns an asset identifier you can use to check processing status.
+
+    <CodeGroup tabs="cURL,JavaScript">
+      ```bash
+curl -X POST https://api.videograph.example.com/v1/assets \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "file=@/path/to/video.mp4"
+      ```
+      ```javascript
+const form = new FormData();
+form.append("file", fileInput.files[0]);
+
+const res = await fetch("https://api.videograph.example.com/v1/assets", {
+  method: "POST",
+  headers: {
+    "Authorization": "Bearer YOUR_API_KEY"
+  },
+  body: form
+});
+
+const data = await res.json();
+console.log("Asset ID:", data.id);
+      ```
+    </CodeGroup>
+
+  </Step>
+
+  <Step title="Check encoding status" icon="activity">
+
+    Poll the asset until its status indicates processing is complete. Use the asset ID you received from the upload call.
+
+    ```bash
+curl -X GET https://api.videograph.example.com/v1/assets/ASSET_ID \
+  -H "Authorization: Bearer YOUR_API_KEY"
+    ```
+
+  </Step>
+
+  <Step title="Get a playback URL or embed" icon="play-circle">
+
+    When the asset status is ready, the response includes a playback URL you can use in any web player or in your application. For more on players, see [/players-sdks-embeds](/players-sdks-embeds).
+
+    ```bash
+# Example snippet from a completed asset response
+{
+  "id": "ASSET_ID",
+  "status": "ready",
+  "playback": {
+    "url": "https://player.videograph.example.com/embed/ASSET_ID"
+  }
+}
+    ```
+  </Step>
+
+  <Step title="Test in your browser" icon="monitor">
+
+    Open the playback URL in your browser. You should see a working embed for your video.
+
+    ```html
+<iframe
+  src="https://player.videograph.example.com/embed/ASSET_ID"
+  width="640"
+  height="360"
+  allow="autoplay"
+></iframe>
+    ```
+  </Step>
+</Steps>

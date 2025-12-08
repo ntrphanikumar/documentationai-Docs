@@ -1,0 +1,136 @@
+---
+title: "FAQ & Troubleshooting"
+description: "Common issues across setup, playback, live streaming, SSAI, analytics, and security, with quick checks and links to relevant docs."
+---
+
+## General guidance
+
+<Callout kind="info">
+
+Before troubleshooting, check your platform status page or incident communications. Widespread issues may already be identified or mitigated.
+
+</Callout>
+
+## Getting started
+
+### Q: I cannot access my workspace or see the right resources  
+**A:** Ensure your account has been added to the correct workspace and role. See [Accounts, Workspaces & Roles](/accounts-workspaces-roles).
+
+Quick checks:
+- Confirm you are logged in with the expected identity provider.  
+- Ask an administrator to verify your role assignment.  
+- If recently added, refresh your session or sign out and back in.
+
+### Q: My API requests are failing with unauthorized or forbidden errors  
+**A:** Verify your API key or token is valid and has the correct scope. See [Authentication & Authorization](/authentication).
+
+Quick checks:
+- Check for expired test tokens.  
+- Ensure you are using the correct environment key.  
+- Make sure your client clock is not significantly skewed.
+
+## Playback issues
+
+### Q: Playback will not start or shows an unsupported format error  
+**A:** Confirm the asset is fully processed and has the needed renditions. See [Uploading & Ingesting Video](/vod-uploading-ingesting) and [Encoding Profiles & Renditions](/vod-encoding-profiles).
+
+Quick checks:
+- Check the asset processing status in your dashboard.  
+- Verify the player is loading over HTTPS.  
+- Confirm your browser supports the requested format.
+
+### Q: Playback buffers frequently or stalls  
+**A:** Review network delivery and rendition availability. See [Players, SDKs & Embeds](/players-sdks-embeds).
+
+Quick checks:
+- Test on a different network or device.  
+- Confirm the lowest-resolution rendition is present.  
+- Inspect network waterfall for long or missing segment downloads.
+
+### Q: Secure playback is failing or tokens are rejected  
+**A:** Confirm your token signing logic matches platform expectations. See [Secure Playback](/vod-secure-playback).
+
+Quick checks:
+- Ensure your token includes all required fields.  
+- Verify the signing key matches what is configured in your workspace.  
+- Check for time-based mismatches such as expired tokens.
+
+## Live streaming
+
+### Q: My encoder says there is no ingest or it cannot connect  
+**A:** Validate your RTMP or SRT settings and stream state. See [Live Stream Basics](/live-stream-basics).
+
+Quick checks:
+- Confirm the stream is set to active or ready.  
+- Copy the ingest URL and stream key again to avoid hidden characters.  
+- Test with a known-good encoder profile.
+
+### Q: Live latency is higher than expected  
+**A:** Review your player configuration and segment durations. See [Live Monitoring & Health Checks](/live-monitoring-health).
+
+Quick checks:
+- Validate the player is not in low-latency-disabled mode.  
+- Check if your encoder uses short segment settings.  
+- Compare measured latency on multiple networks.
+
+### Q: My live recording or VOD output is missing  
+**A:** Ensure recording is enabled and the stream reached a stable state. See [Live Recording & VOD Conversion](/live-recording-vod).
+
+Quick checks:
+- Check if the stream ended cleanly.  
+- Verify your workspace has recording enabled.  
+- Review logs or events for ingest interruptions.
+
+## SSAI and monetization
+
+### Q: No ads are appearing  
+**A:** Confirm the SSAI configuration and ad rules are enabled. See [Configuring Dynamic Ad Insertion](/ssai-configuring).
+
+Quick checks:
+- Validate your ad decisioning endpoint returns valid responses.  
+- Confirm the ad break markers exist.  
+- Check the player is using the SSAI URL.
+
+### Q: Ad fill is low or breaks behave oddly  
+**A:** Review targeting rules and fallback settings. See [Ad Rules, Targeting & Validation](/ssai-rules-targeting).
+
+Quick checks:
+- Inspect returned ad responses for missing creatives.  
+- Ensure your targeting rules are not overly restrictive.  
+- Validate ad durations match expected break lengths.
+
+## Analytics and reporting
+
+### Q: My view counts do not match other analytics tools  
+**A:** Different tools measure sessions and starts differently. See [Analytics Overview](/analytics-overview).
+
+Quick checks:
+- Compare the same timezone and date range.  
+- Confirm filtering or segmentation is aligned.  
+- Note that autoplays and retries may be counted differently.
+
+### Q: Analytics data is delayed  
+**A:** Some metrics process in batches. See [Real-Time Monitoring](/analytics-realtime) and [Reporting & Exporting Data](/analytics-reporting-export).
+
+Quick checks:
+- Check expected latency for each metric type.  
+- Verify your filters are not excluding data.  
+- Ensure your time window is wide enough to account for ingestion delays.
+
+## Management and security
+
+### Q: Users cannot access certain tools or features  
+**A:** Verify organization or team role configuration. See [Organizations, Teams & Roles](/management-orgs-teams).
+
+Quick checks:
+- Check for disabled teams or pending invitations.  
+- Ensure role inheritance is set up as expected.  
+- Confirm user authentication method matches what your org requires.
+
+### Q: I accidentally exposed an API key  
+**A:** Revoke and rotate the affected credentials immediately. See [API Keys, Secrets & Security Best Practices](/management-api-security).
+
+Quick checks:
+- Rotate the key in your workspace settings.  
+- Redeploy any services using the old key.  
+- Review audit logs for misuse indicators.

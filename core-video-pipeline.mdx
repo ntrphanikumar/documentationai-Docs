@@ -1,0 +1,89 @@
+---
+title: "Video Pipeline: Ingest, Process, Deliver"
+description: "Understand Videograph&apos;s end-to-end architecture for ingesting, processing, and delivering both VOD and live video."
+---
+
+## Overview
+
+Videograph provides a unified pipeline that ingests video from multiple sources, processes it into optimized renditions, and delivers it through adaptive streaming formats. This page introduces the core concepts behind that flow so you can design integrations confidently.
+
+<Callout kind="info">
+
+  If you are new to Videograph, you may want to start with the high-level concepts in [Introduction to Videograph](/introduction) before diving into architecture details.
+
+</Callout>
+
+## Architecture at a glance
+
+The pipeline follows a simple directional flow for both on-demand and live inputs:
+
+- Source input (upload, URL, RTMP, SRT)
+- Processing engine (transcoding, packaging, normalization)
+- Delivery layer (CDN, HLS, DASH, MP4, assets)
+
+Below is a simplified ASCII diagram:
+
+```
+[Input] --> [Ingest] --> [Transcode/Package] --> [Delivery Outputs]
+```
+
+## Ingest
+
+Videograph supports multiple input types for both VOD and live workflows.
+
+### Upload and URL ingest
+
+- Direct file upload for on-demand assets.
+- Remote fetch from a publicly reachable URL when you do not want to upload manually.
+
+### Live ingest (RTMP and SRT)
+
+- RTMP endpoints for widely supported encoders.
+- SRT for secure, low-latency contribution.
+- Suitable for channels defined in [Live Stream Basics](/live-stream-basics).
+
+### Input normalization
+
+- Standardizes container and codec metadata before processing.
+- Ensures that subsequent transcoding steps behave consistently across input types.
+
+## Process
+
+Videograph converts all ingested content into streaming-ready profiles.
+
+### Transcoding and renditions
+
+- Multiple renditions generated from encoding profiles, including 4K when enabled.
+- Optimized bitrate ladders for adaptive playback on a range of devices.
+- For customization options, refer to [Encoding Profiles & Renditions](/vod-encoding-profiles).
+
+### Audio and packaging
+
+- Audio normalization aligns loudness levels across content.
+- DRM packaging can be applied for protected playback scenarios.
+- Output containers prepared for HLS and DASH pipelines.
+
+### Asset enhancements
+
+- Automatic or manual thumbnail generation.
+- Subtitle ingestion or sidecar file support via workflows in [Thumbnails, Subtitles & Overlays](/vod-thumbnails-subtitles-overlays).
+
+## Deliver
+
+Once processing is complete, Videograph exposes ready-to-stream outputs and associated assets.
+
+### Adaptive streaming formats
+
+- HLS delivery for broad device support.
+- DASH delivery for compatible players and platforms.
+- Progressive MP4 files for direct download or simple embeds.
+
+### Player and SDK support
+
+- API-accessible playback URLs suitable for use with the players described in [Players, SDKs & Embeds](/players-sdks-embeds).
+- Consistent URL structure for both VOD and live outputs.
+
+### Analytics integration
+
+- Playback and engagement analytics available across outputs.
+- Metrics surfaced through the pages listed under the Analytics & Monitoring section, such as [Analytics Overview](/analytics-overview).

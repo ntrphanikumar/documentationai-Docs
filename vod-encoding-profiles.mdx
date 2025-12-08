@@ -1,0 +1,74 @@
+---
+title: "Encoding Profiles & Renditions"
+description: "Learn how encoding profiles define codecs, resolutions, and bitrates for generating adaptive bitrate renditions in Videograph VOD."
+---
+
+## Overview
+
+Encoding profiles determine how Videograph transcodes your uploaded videos into multiple renditions suitable for adaptive bitrate streaming. Each profile specifies parameters such as codec, resolution, bitrate, and audio format. Videograph uses these profiles to create a ladder of renditions, allowing players to switch quality levels based on network conditions and device capabilities.
+
+## Profile components
+
+An encoding profile typically includes:
+
+- **Resolution**: Output dimensions such as 426x240, 640x360, 1280x720, 1920x1080.
+- **Bitrate**: Target video bitrate for each resolution. Higher resolutions generally require higher bitrates.
+- **Codec**: Commonly H.264 for broad compatibility. Some workflows may support HEVC or VP9 depending on the platform.
+- **Audio settings**: Audio codec (often AAC), channels, and audio bitrate.
+- **Preset / quality tuning**: Encoder speed or efficiency settings that balance quality and processing time.
+
+<Callout kind="tip">
+
+Choose bitrates that scale consistently with resolution to ensure smooth transitions in adaptive playback.
+
+</Callout>
+
+## How renditions and ladders work
+
+A rendition is one encoded output variant of your video. Multiple renditions form an adaptive bitrate ladder. Players automatically shift among these renditions as bandwidth and CPU conditions change.
+
+Adaptive bitrate ladders commonly:
+
+- Start with a low-resolution, low-bitrate base layer for poor networks.
+- Include several mid-tier renditions for average mobile and broadband conditions.
+- End with one or more high-definition renditions for fast connections and large screens.
+
+## Choosing profiles for your use case
+
+The right profile set depends on audience, device mix, and cost constraints.
+
+### Considerations
+
+- **Audience bandwidth**: Regions with slower networks benefit from more low-bitrate options.
+- **Device capabilities**: If you expect many mobile viewers, prioritize 360p and 540p renditions.
+- **Content type**: High-motion content requires higher bitrates to avoid artifacts.
+- **Storage and delivery cost**: More renditions increase storage and CDN usage.
+
+### Recommended selection strategies
+
+- Start with a standard ladder covering 240p to 1080p.
+- Add a 4K rendition only if your highest-quality source warrants it.
+- Remove unnecessary high-bitrate renditions if your audience is bandwidth-limited.
+
+## Managing profiles in Videograph
+
+Videograph provides a default set of encoding profiles suitable for most VOD workflows. You can use these defaults as-is or configure custom profiles to better align with your audience and delivery goals.
+
+At a high level, managing profiles involves:
+
+- Selecting a default profile set when uploading or ingesting videos.
+- Defining custom resolution and bitrate combinations for your workflow.
+- Applying custom profiles across ingest pipelines or project-level configurations.
+- Reviewing output renditions after processing to verify quality levels.
+
+Detailed endpoint-level instructions appear elsewhere in the documentation when you work with API-based ingest or custom pipelines.
+
+## Example rendition ladders
+
+The table below illustrates sample ladders tuned for different scenarios.
+
+| Ladder type | Renditions | Notes |
+|-------------|------------|-------|
+| Mobile | 240p 300kbps, 360p 600kbps, 540p 1200kbps | Optimized for low bandwidth and small screens. |
+| Standard | 240p 300kbps, 360p 800kbps, 720p 2500kbps, 1080p 4500kbps | General-purpose ladder for broad audiences. |
+| Premium | 360p 1000kbps, 720p 3000kbps, 1080p 6000kbps, 4K 12000kbps | High-quality ladder for large displays and fast connections. |

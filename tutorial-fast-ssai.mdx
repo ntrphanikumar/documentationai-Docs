@@ -1,0 +1,94 @@
+---
+title: Launch a FAST Channel with SSAI
+description: Step-by-step tutorial for creating a linear FAST channel, enabling server-side ad insertion, and validating playback before launch.
+---
+
+## Overview
+
+This tutorial shows you how to build a simple linear or FAST channel backed by on-demand assets and monetized through server-side ad insertion. You will define a programming schedule, configure a channel output, connect an ad server, add ad rules, and validate playback.
+
+## Prerequisites
+
+- Familiarity with assets, playlists, and channels. See [Assets, Streams, Channels & Playlists](/assets-streams-channels-playlists).
+- VOD assets uploaded and processed.
+- Access to an ad server or ad decisioning endpoint.
+- A test workspace or staging environment recommended.
+
+<Callout kind="info">
+
+Start with a low-traffic or staging channel to verify ad behavior, fill rate, and playback stability before moving to production.
+
+</Callout>
+
+## Step 1: Prepare content and programming blocks
+
+Linear channels require a schedule that determines what plays and when. You can structure this using playlists or a block-based schedule.
+
+### Common patterns
+
+- A looped playlist of VOD assets.
+- Time-coded segments programmed over a 24-hour grid.
+- A short schedule repeated throughout the day.
+
+### What you need to define
+
+- The ordered list of assets.
+- Optional bumpers or interstitials.
+- Duration and rotation rules.
+
+## Step 2: Create a channel and configure output
+
+Create a channel and set up the delivery profile that players will consume.
+
+### Typical output configuration
+
+- HLS or DASH packaging.
+- Multi-bitrate ladders.
+- Target latency appropriate to FAST distribution.
+
+Once created, verify that the channel starts correctly and that the schedule loops or follows the timeline as intended.
+
+## Step 3: Enable SSAI and connect an ad server
+
+Attach an SSAI configuration to your channel and provide the ad decisioning endpoint. Follow the setup guide in [Configuring Dynamic Ad Insertion](/ssai-configuring).
+
+### Required inputs
+
+- The ad server URL.
+- Any authentication parameters.
+- Optional content metadata forwarded as ad-targeting signals.
+
+## Step 4: Define ad breaks and rules
+
+Specify when and how ad breaks should occur. This may include pre-roll, mid-roll, or fixed-position breaks within your programming blocks.
+
+For available rule types, targeting logic, and validation options, see [Ad Rules, Targeting & Validation](/ssai-rules-targeting).
+
+### Break configuration concepts
+
+- Break duration targets.
+- Maximum ads per break.
+- Frequency capping rules.
+- Targeting signals mapped from channel or asset metadata.
+
+## Step 5: Test playback and ad delivery
+
+Before launch, validate that the channel plays correctly and that ad requests and insertions behave as expected.
+
+### What to test
+
+- Start-up behavior and first-break delivery.
+- Break transitions and slate handling.
+- Fill rate and returned ad decision responses.
+- Rendition switching and stability.
+
+For metrics and revenue insights, see [Ad Revenue Analytics](/ssai-analytics).  
+For real-time channel health, see [Monitoring & Health Checks](/live-monitoring-health).
+
+## Launch checklist
+
+- Channel loops or follows schedule without gaps.
+- SSAI configuration is active and validated against your ad server.
+- Break rules are correct for your programming pattern.
+- Playback tested on multiple devices and networks.
+- Monitoring and analytics dashboards ready for launch.

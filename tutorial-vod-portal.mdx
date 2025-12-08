@@ -1,0 +1,137 @@
+---
+title: "Build a Simple VOD Portal in a Day"
+description: "A solution-style tutorial showing full-stack engineers how to build a basic VOD portal using Videograph for ingest, processing, and secure playback."
+---
+
+## Overview
+
+This tutorial shows you the end-to-end shape of building a simple video-on-demand portal powered by Videograph. You will create a small catalog of videos, process them with consistent encoding and thumbnails, and surface a basic catalog and detail view that play back secure video URLs using your preferred web stack.
+
+A typical VOD portal includes a catalog view listing available videos, a detail page with playback and metadata, and lightweight admin flows for uploading content. Videograph handles ingest, encoding, thumbnailing, and secure playback URLs, while you supply the web application and user management.
+
+## Prerequisites
+
+Before starting, you should have:
+
+- A Videograph account with at least one workspace. See [Accounts, Workspaces and Roles](/accounts-workspaces-roles).
+- API credentials that allow you to upload and retrieve video assets. See [Authentication and Authorization](/authentication).
+- A basic web application stack of your choice for building catalog and detail pages.
+
+<Callout kind="tip">
+
+Start with a small dataset of three to five videos so that you can iterate quickly before expanding your catalog.
+
+</Callout>
+
+## Step 1: Set up workspace and authentication
+
+Use your existing Videograph workspace or create a new one dedicated to this portal. Generate API credentials following the authentication guide.
+
+### Tasks
+
+- Confirm workspace membership and permissions in [Accounts, Workspaces and Roles](/accounts-workspaces-roles).
+- Create or retrieve API keys from your security tooling, and follow the flows in [Authentication and Authorization](/authentication).
+- Store keys in environment variables suitable for your backend framework.
+
+## Step 2: Ingest a small catalog of VOD assets
+
+Use the VOD upload and ingest flow to bring a handful of video files into Videograph. Reference the ingestion process to understand the lifecycle from upload through processing.
+
+### Tasks
+
+<Steps>
+  <Step title="Upload each video file" icon="upload-cloud">
+
+  
+  Use the upload flow described in the VOD ingest documentation. Make sure to assign clear titles and attach any metadata or tags you will use to populate the catalog.
+
+  </Step>
+
+  <Step title="Track asset status" icon="activity">
+
+  
+  Poll asset status or subscribe to your eventing pipeline until each file completes processing. Ensure that assets reach states that allow playback.
+
+  </Step>
+
+  <Step title="Store identifiers" icon="database">
+
+  
+  Store each asset identifier in your application database so that catalog pages can reference them later.
+
+  </Step>
+</Steps>
+
+## Step 3: Configure encoding profiles and thumbnails
+
+Once your assets are uploaded, configure consistent encoding settings and thumbnail choices so that your portal has a uniform playback experience and polished visual presentation.
+
+### Tasks
+
+- Review encoding levels and choose an appropriate profile from the concepts described in the encoding profiles documentation.
+- If needed, create custom renditions for devices or bandwidth targets.
+- Generate or select thumbnails using the thumbnail tooling.
+
+Links for deeper reference:
+
+- [Encoding Profiles and Renditions](/vod-encoding-profiles)
+- [Thumbnails, Subtitles and Overlays](/vod-thumbnails-subtitles-overlays)
+
+## Step 4: Build catalog and detail pages with playback URLs
+
+Use your application stack to render a lightweight catalog and a detail page with the Videograph player or your preferred web player integration.
+
+### Tasks
+
+<Steps>
+  <Step title="Render a catalog view" icon="list">
+
+  
+  Query your stored asset metadata and build a simple catalog listing. Include asset titles, durations, and thumbnail URLs.
+
+  </Step>
+
+  <Step title="Create a detail page" icon="monitor">
+
+  
+  For each asset, retrieve the associated secure playback URL. Display metadata and embed the player as documented in the player integration guide.
+
+  </Step>
+
+  <Step title="Implement secure playback rules" icon="shield">
+
+  
+  Follow the secure playback concepts to protect URLs and ensure that only authorized users in your application can access the streams.
+
+  </Step>
+</Steps>
+
+Helpful references:
+
+- [Players, SDKs and Embeds](/players-sdks-embeds)
+- [Secure Playback](/vod-secure-playback)
+
+## Step 5: Add basic analytics and monitoring
+
+Add view tracking and health monitoring so your VOD portal can surface engagement metrics and operational insights.
+
+### Tasks
+
+- Use the analytics overview to understand what metrics are available.
+- Collect view events from the player and associate them with your users or sessions.
+- Surface basic dashboards or logs in your internal tools.
+
+Links for deeper reference:
+
+- [Analytics Overview](/analytics-overview)
+- [Viewership and Engagement Metrics](/analytics-viewership-metrics)
+- [Real-Time Monitoring](/analytics-realtime)
+
+## Next steps
+
+Once your initial portal is working, you can extend it in several ways:
+
+- Add richer metadata and filtering using the tools in the metadata organization documentation.
+- Introduce subtitles, overlays, and enhanced accessibility features.
+- Expand your catalog ingestion workflows with batch processing or automated pipelines.
+- Add monetization or server-side ad insertion using the SSAI stack.

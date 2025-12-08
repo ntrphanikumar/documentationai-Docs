@@ -1,0 +1,118 @@
+---
+title: "Players, SDKs & Embeds"
+description: "Conceptual overview of Videograph playback options, including hosted player embeds, Web SDK integration, and native mobile or TV playback."
+---
+
+## Overview
+
+Videograph provides multiple paths for integrating playback into your product. All options consume the same underlying renditions and live outputs, but each offers a different balance of control, flexibility, security, and UI customization.
+
+This page helps you compare the main approaches and decide which one matches your use case. For a broader view of SDK options, see [SDKs & Client Libraries](/sdks-overview).
+
+## Player options
+
+### Hosted player (iframe embed)
+
+The hosted player is the simplest way to add playback. It is served by Videograph and embedded directly via an iframe. Use it when you want a reliable, low-maintenance player with familiar controls and minimal setup.
+
+Typical use cases:
+
+- Content websites and landing pages  
+- Quick prototypes and low-code environments  
+- Publishers who do not need custom player UI  
+
+Key characteristics:
+
+- Embed via a single iframe snippet  
+- Built-in controls, captions, and responsiveness  
+- Automatic updates and compatibility handled by Videograph  
+
+### Web SDK and programmable player
+
+For web applications that need deeper control over UI, events, or playback experience, use the Web SDK. It exposes player controls and event listeners, enabling fully custom interfaces and business logic.
+
+Examples of when to use it:
+
+- Custom playback controls and layouts  
+- Integrating analytics, watch-state sync, or paywall logic  
+- Building video-centric applications or platforms
+
+Learn more in the [Web SDK / Player Integration guide](/web-sdk-player).
+
+### Native mobile and TV integrations
+
+When targeting iOS, Android, tvOS, or other device environments, you can use Videograph&apos;s HLS outputs with the platform&apos;s native players or frameworks.
+
+Use cases:
+
+- Mobile or TV apps with native UI patterns  
+- High-performance playback, AirPlay / Cast integration, or offline support  
+- Scenarios requiring tight OS-level behavior  
+
+See the platform guidance in [Mobile & TV Integrations](/mobile-tv-integrations).
+
+## Embeds vs API-driven integrations
+
+### When to use embeds
+
+Iframe embeds are fast to integrate and ideal when:
+
+- You want the quickest path to a working player  
+- A consistent UI across devices is acceptable  
+- You prefer Videograph to manage updates, bug fixes, and responsiveness  
+
+### When to use API-driven or SDK-based players
+
+Choose these approaches when you need:
+
+- Control over the playback UI or interaction flows  
+- Access to player events for analytics, personalization, or automation  
+- Dynamic configuration of sources, tracks, or overlays  
+- Integration with your existing design system or app shell
+
+## Customization and branding
+
+Videograph supports multiple customization layers depending on the integration path.
+
+### Embedded player customization
+
+- Basic styling via container CSS  
+- Branding options that do not require rebuilding the player  
+- Lightweight overlays using HTML/CSS surrounding the iframe  
+
+### Web SDK customization
+
+- Custom controls, layouts, and interactions  
+- Fine-grained event handling (for example, play, pause, seek, error)  
+- Dynamic overlays, custom menus, or app-driven supplemental content  
+- Deeper integration with your application&apos;s authentication or authorization model  
+
+### Native player customization
+
+- Full access to the platform&apos;s player UI components  
+- Ability to integrate with OS-level features such as picture-in-picture  
+- Custom screens, gestures, and advanced broadcast-style behaviors  
+
+## Choosing the right approach
+
+<Callout kind="info">
+
+Decide based on your required control level:
+
+- Use the hosted iframe for the fastest path and minimal code.  
+- Use the Web SDK for custom UI, event-driven logic, and advanced integrations.  
+- Use native mobile or TV playback when building fully custom apps on those platforms.
+
+</Callout>
+
+### Simple sites and CMS-driven pages
+
+A hosted iframe is usually sufficient. It requires no build pipeline, works across devices, and provides out-of-the-box controls.
+
+### Web apps and platforms
+
+Use the Web SDK when the video experience is central to the product. It enables branding, app-driven state, interactive layers, and custom analytics.
+
+### Mobile and TV applications
+
+Adopt native playback for the best performance, platform-specific UI, and a fully integrated user experience.

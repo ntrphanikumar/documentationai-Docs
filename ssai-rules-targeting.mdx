@@ -1,0 +1,80 @@
+---
+title: "Ad Rules, Targeting & Validation"
+description: "Conceptual guide for defining SSAI ad rules, targeting dimensions, ad server integration, and validation workflows in Videograph."
+---
+
+## Overview
+
+Server-side ad insertion in Videograph relies on configurable ad rules that determine which targeting signals are sent to an ad server. These signals help select the most relevant ads for a given viewer, device, and piece of content. Rules can be applied to streams, channels, playlists, and on-demand assets, and are evaluated whenever Videograph requests ads from a third-party system using standard ad request protocols such as VAST.
+
+Ad-ops and backend teams use these rules to control inventory segmentation, comply with content ratings, and align with monetization strategies across regions and platforms.
+
+<Callout kind="tip">
+
+Start with a small set of clear rules before adding complex combinations. Incremental layering makes it easier to verify behavior and monitor changes.
+
+</Callout>
+
+## Targeting dimensions
+
+Videograph exposes a set of common dimensions you can use to shape ad delivery across SSAI-enabled content.
+
+### Content and programming context
+
+- Content category or genre.
+- Rating or maturity classification.
+- Live vs on-demand mode.
+- Channel or playlist identity when delivered through linear or FAST-style programming.
+
+### Viewer device and environment
+
+- Device type and platform family.
+- App or integration surface (for example, mobile app vs smart TV integration).
+- Network environment when available.
+
+### Geography
+
+- Country and optionally region-level segmentation (based on standard geo-IP resolution).
+
+### Custom metadata
+
+- Custom key-value pairs attached to content or sessions.
+- Tag-driven metadata defined in the management workflow.
+
+## Rule evaluation model
+
+Videograph evaluates ad rules at the moment an ad request is triggered. The rule model follows these principles:
+
+1. Each rule defines conditions on one or more targeting dimensions.
+2. When a stream or channel triggers an ad break, Videograph collects all relevant metadata associated with the viewer session and the content.
+3. Rules that match the current context contribute a set of targeting key-value pairs.
+4. Videograph merges the resulting pairs and attaches them to the outbound ad request sent to the ad server.
+5. The ad server decides which creative or line item to return based on its internal configuration.
+
+Rule evaluation is deterministic and context-dependent. If multiple rules apply, their targeting data is aggregated, with later-evaluated or more specific rules taking precedence when key collisions occur.
+
+## Integrating with ad server targeting
+
+Ad servers expect structured key-value targeting to align with inventory and campaign setup. Videograph passes targeting parameters using query-string keys or equivalent parameters supported by the ad server specification.
+
+Typical mappings include:
+
+- Category and rating values mapped into dedicated keys used by the ad server.
+- Device or platform identifiers included as descriptive parameters.
+- GEO fields encoded according to ad server requirements.
+- Custom metadata forwarded as simple key-value pairs when permitted by the integration.
+
+You can align Videograph rules with your ad server taxonomy by ensuring unique, stable keys for segments and by validating that the ad server recognizes the values included in Videograph requests.
+
+## Validating and troubleshooting
+
+Validation ensures that targeting behaves as expected and that the returned ads match your rules and ad server configuration.
+
+### Checklist
+
+- Confirm that each dimension you target has a corresponding rule in Videograph.
+- Verify that the ad server is configured to understand the keys Videograph sends.
+- Use test channels or controlled streams to capture ad request logs and inspect query parameters.
+- Monitor VAST responses and verify that the returned creative matches your expected segment.
+- Test across device types and network environments, as targeting often varies by platform.
+- Review playback sessions to confirm that the expected ads appear consistently.

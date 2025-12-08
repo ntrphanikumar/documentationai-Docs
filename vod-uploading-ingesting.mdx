@@ -1,0 +1,111 @@
+---
+title: "Uploading & Ingesting Video"
+description: "How to upload on-demand videos to Videograph using the dashboard or APIs, including supported ingest methods, formats, and basic limits."
+---
+
+## Overview
+
+Videograph supports multiple ways to ingest on-demand video so you can integrate uploads into your operational workflows. You can upload files through the web dashboard or create assets through the API using either direct file upload or a source URL that Videograph fetches.
+
+After ingest, each video enters the processing pipeline before becoming playable. To authenticate when using the API, you will need an API key. See [Authentication & Authorization](/authentication) for details.
+
+## Supported ingest methods
+
+### Dashboard upload
+
+You can upload MP4, MOV, and M4V files directly from your browser. This is the simplest method for operators who manage content through the UI.
+
+### API-based upload
+
+You can create an asset and attach a file using a multipart POST request. This is suitable for automated backends and server-side pipelines.
+
+### URL-based ingest
+
+You can provide a remote file URL, and Videograph will fetch and ingest the source media. This is commonly used when content already exists in external storage.
+
+## Supported formats and basic limits
+
+Videograph ingests the following common container formats:
+
+- MP4
+- MOV
+- M4V
+
+File size limits vary based on workspace configuration. For large or frequently uploaded assets, prefer URLs or server-side API uploads.
+
+<Callout kind="info">
+
+Supported codec details and encoding behavior are covered on the separate page: *Encoding Profiles & Renditions*.
+
+</Callout>
+
+## Uploading via API
+
+Use the `POST /assets` endpoint to create a video asset with either a file or a remote media URL.
+
+<CodeGroup tabs="cURL,JavaScript" show-lines={true}>
+
+```bash
+curl -X POST "https://api.videograph.example/assets" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "file=@/path/to/video.mp4"
+```
+
+```javascript
+import fetch from "node-fetch";
+import fs from "fs";
+
+const form = new FormData();
+form.append("file", fs.createReadStream("/path/to/video.mp4"));
+
+const res = await fetch("https://api.videograph.example/assets", {
+  method: "POST",
+  headers: { Authorization: "Bearer YOUR_API_KEY" },
+  body: form
+});
+
+const asset = await res.json();
+console.log(asset);
+```
+
+</CodeGroup>
+
+To ingest from a URL instead of a file, send a JSON body containing the `sourceUrl` field:
+
+````md
+```json
+{
+  "sourceUrl": "https://example.com/video-source.mp4"
+}
+```
+````
+
+## Uploading via dashboard
+
+<Steps>
+  <Step title="Open the dashboard upload panel" icon="upload">
+    
+    Navigate to the Video on Demand section of the web dashboard and select the option to upload a new video.
+  
+  </Step>
+
+  <Step title="Choose your file" icon="file">
+
+    Select an MP4, MOV, or M4V file from your local machine.
+  
+  </Step>
+
+  <Step title="Start ingest" icon="play-circle">
+
+    Confirm the upload. Videograph begins ingesting the file and processing will start automatically.
+  
+  </Step>
+</Steps>
+
+## When to use each method
+
+- Use **dashboard upload** for manual operations and quick, ad‑hoc content additions.
+- Use **API file upload** when content originates from your servers or automated pipelines.
+- Use **URL-based ingest** when files are already stored in external storage or content delivery sources.
+
+After ingest completes, the asset becomes available for playback and further operations such as metadata updates, thumbnail generation, and secure delivery.
