@@ -5,13 +5,14 @@ description: "Create your first live stream, push RTMP from an encoder, and test
 
 ## Overview
 
-This quickstart walks you through creating a live stream, sending RTMP from an encoder, and obtaining a playback URL. Videograph supports low-latency live streaming over RTMP and can optionally record the live session to produce an on-demand asset.
+This quickstart walks you through creating a live stream, sending RTMP from an encoder, and obtaining a playback URL. Videograph supports low-latency live streaming and can optionally record the session to produce an on-demand asset. For a full production‑ready workflow, see the deeper guide in [Live Streaming & Recording via API](/live-recording-vod). For conceptual background, you may also review [Live Stream Basics](/live-stream-basics).
 
 ## Prerequisites
 
 - A Videograph account. See [Introduction to Videograph](/introduction).
 - An API key with permission to create live streams. See [Authentication & Authorization](/authentication).
 - An RTMP-compatible encoder such as OBS, vMix, or a hardware encoder.
+- Optional: [Live Stream Basics](/live-stream-basics) if you want additional context before running your first test.
 
 ## Create and publish your first live stream
 
@@ -19,7 +20,7 @@ This quickstart walks you through creating a live stream, sending RTMP from an e
 
   <Step title="Create a live stream via API" icon="terminal">
 
-    Use the Videograph API to create a new live stream.  
+    Create a live stream and obtain the key values you will use in later steps: `rtmpUrl`, `streamKey`, and `playbackUrl`.  
     The minimal request includes `title`, `region`, and `record`.
 
     <CodeGroup tabs="curl">
@@ -35,7 +36,7 @@ curl -X POST "https://api.videograph.ai/video/services/api/v1/livestreams" \
 ```
     </CodeGroup>
 
-    A successful response contains values such as `playbackUrl`, `rtmpUrl`, and `streamKey`, which you will use in your encoder.
+    A successful response returns the ingest URL and playback details needed for setup.
 
     <Callout kind="info">
 
@@ -48,7 +49,7 @@ curl -X POST "https://api.videograph.ai/video/services/api/v1/livestreams" \
 
   <Step title="Configure your encoder" icon="settings">
 
-    Configure your encoder to push RTMP using the `rtmpUrl` and `streamKey` returned by the API.
+    Configure your encoder using the `rtmpUrl` and `streamKey` returned by the API.
 
     <CodeGroup tabs="encoder-config">
 ```yaml
@@ -70,8 +71,8 @@ audio:
 
   <Step title="Start streaming and verify status" icon="play-circle">
 
-    Start streaming from your encoder.  
-    In your Videograph dashboard or via API, verify that the stream is receiving data and has transitioned to a `live` state.
+    Begin streaming from your encoder.  
+    In your Videograph dashboard or via API, confirm that data is arriving and that the stream transitions to a `live` state.
 
     <Callout kind="info">
 
@@ -84,12 +85,17 @@ audio:
 
   <Step title="Get and test the playback URL" icon="monitor">
 
-    Retrieve the `playbackUrl` from the API response or your dashboard.  
-    It is an HLS URL that your player can fetch immediately after the stream becomes active.
+    Retrieve the `playbackUrl` from the API or from your dashboard.  
+    This HLS URL becomes active once the stream is live.
 
-    Open the playback URL in your browser or your player integration.  
-    For embed options, see [Players, SDKs & Embeds](/players-sdks-embeds).
+    Open the playback URL in your browser or your player integration. For embed options, see [Players, SDKs & Embeds](/players-sdks-embeds).
 
   </Step>
 
 </Steps>
+
+## Next steps
+
+- Learn the full production-ready workflow in [Live Streaming & Recording via API](/live-recording-vod).
+- Explore core concepts in [Live Stream Basics](/live-stream-basics).
+- Integrate your player using the [Web SDK / Player Integration](/web-sdk-player).
