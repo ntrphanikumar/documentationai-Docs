@@ -1,25 +1,23 @@
 ---
 title: "Creating, Streaming & Recording Live Sessions"
-description: "End‑to‑end workflow for creating a live stream, broadcasting via RTMP, watching HLS playback, and optionally converting the session into a VOD asset."
+description: "End‑to‑end workflow for creating a live stream, broadcasting via RTMP, watching HLS playback, and recording the session for later VOD retrieval."
 ---
 
 ## Overview
 
-This guide provides a complete workflow for creating a live stream using the Videograph API, sending video from an RTMP encoder, watching the HLS output, and optionally recording the session so it becomes a finalized VOD asset.
+This guide shows how to create a live stream using the Videograph API, broadcast using an RTMP encoder, view the HLS output, and optionally record the session. When recording is enabled, the stream is captured and remains available for about 12 hours from the start time before it is processed into a VOD‑like asset accessible through the standard contents API.
 
-If you are new to live streaming on Videograph, see [Live Streaming Overview](/live-stream-basics). For foundational delivery concepts, see [Content Model & Playback Basics](/core-video-pipeline).
-
-Videograph supports both recorded and non‑recorded live sessions. When recording is enabled, captured segments are assembled into a standard VOD asset once the broadcast ends.
+If you are new to live streaming on Videograph, see [Live Streaming Overview](/live-stream-basics). For essential playback concepts, see [Content Model & Playback Basics](/core-video-pipeline).
 
 ## Prerequisites
 
 - API access key and secret (see [Authentication & Access Control](/authentication)).
 - An RTMP‑compatible encoder such as OBS Studio.
-- An HLS‑compatible player or integration method (see [Playing Videos (Web & App Integration)](/web-sdk-player)).
+- An HLS‑compatible playback integration (see [Playing Videos (Web & App Integration)](/web-sdk-player)).
 
 <Callout kind="info">
 
-Recording must be enabled before the live stream begins. Recorded sessions are retained for a limited window while processing completes.
+Recording must be enabled when creating the live stream. Recorded sessions are retained for about 12 hours from the start of the broadcast before they are processed into a retrievable asset.
 
 </Callout>
 
@@ -30,7 +28,7 @@ Recording must be enabled before the live stream begins. Recorded sessions are r
   <Step title="Create a live stream" icon="cast">
 
   
-Use the `POST /video/services/api/v1/livestreams` endpoint to create a live stream. Provide `title`, `region`, and a `record` boolean to specify whether the session should be captured as VOD.
+Use the `POST /video/services/api/v1/livestreams` endpoint to create a live stream. Set the `record` boolean to control whether the session should be captured for later retrieval.
 
 <CodeGroup tabs="cURL">
 
@@ -48,37 +46,37 @@ curl --request POST \
 
 </CodeGroup>
 
-Set `"record": false` if you do not want the broadcast captured as VOD.
+Setting `"record": false` creates a non‑recorded live stream.
 
   </Step>
 
   <Step title="Interpret and store the response" icon="database">
 
   
-The response includes fields required for your encoder and playback flow:
+The response returns all information required to broadcast and play the stream:
 
-- `playbackUrl`  
-- `rtmpUrl`  
-- `streamKey`  
-- `streamUUID`  
+- `playbackUrl`
+- `rtmpUrl`
+- `streamKey`
+- `streamUUID`
 - `status` (initially Idle)
 
-Store these values. You will combine the ingest base URL with the `streamKey` when configuring your encoder.
+Store these values so your encoder and playback clients can be configured correctly.
 
   </Step>
 
-  <Step title="Choose the correct RTMP ingest base URL" icon="arrow-right">
+  <Step title="Select the correct RTMP ingest base URL" icon="arrow-right">
 
   
-Videograph uses different ingest bases for recorded and non‑recorded streams:
+Videograph uses two ingest bases:
 
-- Recording enabled (`record` set to `true`):  
+- For recorded streams (`record` set to `true`):  
   `rtmp://rc-ingest.in.videograph.ai/rec`
 
-- Recording disabled (`record` set to `false`):  
+- For non‑recorded streams (`record` set to `false`):  
   `rtmp://ingest.in.videograph.ai/live`
 
-Append your returned `streamKey` to the chosen base when configuring the encoder.
+Append the returned `streamKey` when configuring your encoder.
 
   </Step>
 
@@ -87,27 +85,27 @@ Append your returned `streamKey` to the chosen base when configuring the encoder
   
 In OBS or another RTMP encoder:
 
-- Set the server field to the chosen ingest base URL.  
-- Set the stream key field to the returned `streamKey`.  
-- Begin streaming to push video into Videograph.
+- Set the server field to the ingest base URL.
+- Set the stream key field to the returned `streamKey`.
+- Start streaming to send video to Videograph.
 
-When input is detected, the stream transitions from Idle to live and becomes playable.
+Once the stream is received, it becomes playable using the returned HLS `playbackUrl`.
 
   </Step>
 
   <Step title="Watch the live stream via HLS" icon="play-circle">
 
   
-Use the returned `playbackUrl` in any HLS‑capable player. For integration patterns, see [Playing Videos (Web & App Integration)](/web-sdk-player).
+Use the `playbackUrl` in any HLS‑capable player. See [Playing Videos (Web & App Integration)](/web-sdk-player) for common integration patterns.
 
   </Step>
 
-  <Step title="Retrieve the finalized VOD (if recording enabled)" icon="video">
+  <Step title="Retrieve the processed VOD asset (if recording enabled)" icon="video">
 
   
-If `"record": true`, Videograph captures and assembles the full session once the live broadcast ends. After processing completes, the resulting asset becomes available through the contents API.
+If `"record": true`, the stream is recorded and remains accessible for about 12 hours from the start time. After that window, the session is processed into a standard content item retrievable via the contents API.
 
-When you know the content identifier, request metadata such as the VOD playback URL using:
+When you know the resulting content identifier, request the asset and its playback URL:
 
 <CodeGroup tabs="cURL">
 
@@ -119,12 +117,12 @@ curl --request GET \
 
 </CodeGroup>
 
+For editing metadata or managing tags later, see [Managing Video Content](/vod-metadata-tags).
+
   </Step>
 
 </Steps>
 
 ## How recorded sessions become VOD assets
 
-When a recorded live stream ends, Videograph stitches captured segments, performs integrity checks, and pushes the output through the standard VOD pipeline. This includes encoding, thumbnail generation, and metadata processing.
-
-You can later edit metadata, manage tags, or generate derivative clips using the workflows described in [Managing Video Content](/vod-metadata-tags).
+Recorded live streams are captured for about 12 hours from the moment the broadcast begins. After the session and retention window complete, Videograph processes the recording into a content item accessible through the standard VOD API. You can then work with the asset the same way you would any uploaded video, including updating metadata or integrating the playback URL in your applications.
