@@ -1,89 +1,107 @@
 ---
-title: "Video Pipeline: Ingest, Process, Deliver"
-description: "Understand Videograph&apos;s end-to-end architecture for ingesting, processing, and delivering both VOD and live video."
+title: Content Model & Playback Basics
+description: >-
+  Understand the Videograph content object, its lifecycle, status fields, and
+  how playback identifiers map to HLS delivery.
 ---
+## The content object
 
-## Overview
+A Videograph content object represents an on-demand video you upload or reference by URL. It anchors ingestion, processing, and playback. Creation happens through the contents API, where you provide a title, playback policy, and at least one source URL.
 
-Videograph provides a unified pipeline that ingests video from multiple sources, processes it into optimized renditions, and delivers it through adaptive streaming formats. This page introduces the core concepts behind that flow so you can design integrations confidently.
-
-<Callout kind="info">
-
-  If you are new to Videograph, you may want to start with the high-level concepts in [Introduction to Videograph](/introduction) before diving into architecture details.
-
+<Callout kind="info" collapsed="false">
+  For a walkthrough of uploading or ingesting a file, see [Uploading Videos (Dashboard & API)](/vod-uploading-ingesting).
 </Callout>
 
-## Architecture at a glance
+When you create a content object, the API returns a unique `contentId` along with lifecycle status fields. These update as processing progresses and eventually include a playback identifier.
 
-The pipeline follows a simple directional flow for both on-demand and live inputs:
+<CodeGroup show-lines="true" tabs={[]}>
+  ```json
+  {
+    "content": [
+      {
+        "url": "https://d19nx8bm4jzw4h.cloudfront.net/Tears-of-steel.mp4"
+      }
+    ],
+    "playback_policy": ["public"],
+    "title": "Demo Video"
+  }
+  ```
 
-- Source input (upload, URL, RTMP, SRT)
-- Processing engine (transcoding, packaging, normalization)
-- Delivery layer (CDN, HLS, DASH, MP4, assets)
+  ```json
+  {
+    "contentId": "cnt_123",
+    "title": "Demo Video",
+    "playbackPolicy": ["public"],
+    "status": "Pending"
+  }
+  ```
+</CodeGroup>
 
-Below is a simplified ASCII diagram:
+## Lifecycle: upload through ready
+
+After creation, Videograph retrieves the source file and prepares adaptive streaming outputs. The high-level lifecycle is consistent with the external "Add & Stream Video content" guide.
+
+Stages typically include:
+
+- Upload or URL fetch: Videograph obtains the source file.
+
+- Processing: Transcoding and packaging for adaptive streaming.
+
+- Ready: Playback information becomes available.
+
+A simplified flow:
 
 ```
-[Input] --> [Ingest] --> [Transcode/Package] --> [Delivery Outputs]
+[Uploaded or URL provided] --> [Ingest] --> [Process] --> [Ready]
 ```
 
-## Ingest
+Once created, you can poll `GET /video/services/api/v1/contents/{CONTENT_ID}` to observe changes to the `status` and, once ready, receive the playback identifier.
 
-Videograph supports multiple input types for both VOD and live workflows.
+## Status fields
 
-### Upload and URL ingest
+The contents API exposes straightforward status values so you can track readiness.
 
-- Direct file upload for on-demand assets.
-- Remote fetch from a publicly reachable URL when you do not want to upload manually.
+Common values:
 
-### Live ingest (RTMP and SRT)
+- `Pending`: Content was created and is queued for ingest.
 
-- RTMP endpoints for widely supported encoders.
-- SRT for secure, low-latency contribution.
-- Suitable for channels defined in [Live Stream Basics](/live-stream-basics).
+- `Processing`: Videograph is transcoding and packaging the video.
 
-### Input normalization
+- `Ready`: Streaming outputs are complete and a playback identifier can be used in a player.
 
-- Standardizes container and codec metadata before processing.
-- Ensures that subsequent transcoding steps behave consistently across input types.
+<Callout kind="tip" collapsed="false">
+  Polling for `Ready` is the simplest way to know when a content object can be streamed.
+</Callout>
 
-## Process
+## Playback identifiers and URLs
 
-Videograph converts all ingested content into streaming-ready profiles.
+When processing completes, the API returns a playback identifier associated with the content. This value is used to derive the HLS playback URL that Videograph players and any HLS-capable client can request.
 
-### Transcoding and renditions
+Key points:
 
-- Multiple renditions generated from encoding profiles, including 4K when enabled.
-- Optimized bitrate ladders for adaptive playback on a range of devices.
-- For customization options, refer to [Encoding Profiles & Renditions](/vod-encoding-profiles).
+- A playback ID uniquely identifies the streaming output for a content object.
 
-### Audio and packaging
+- The playback URL is an HLS manifest that points to adaptive renditions.
 
-- Audio normalization aligns loudness levels across content.
-- DRM packaging can be applied for protected playback scenarios.
-- Output containers prepared for HLS and DASH pipelines.
+- Compatible players are documented under [Playing Videos (Web & App Integration)](/web-sdk-player).
 
-### Asset enhancements
+### What the playback URL represents
 
-- Automatic or manual thumbnail generation.
-- Subtitle ingestion or sidecar file support via workflows in [Thumbnails, Subtitles & Overlays](/vod-thumbnails-subtitles-overlays).
+The playback URL resolves to an HLS master playlist. Players use this manifest to select renditions dynamically based on network conditions.
 
-## Deliver
+### Sample representation
 
-Once processing is complete, Videograph exposes ready-to-stream outputs and associated assets.
+```
+https://cdn.videograph.ai/hls/{playback_id}/master.m3u8
+```
 
-### Adaptive streaming formats
+The value `playback_id` is returned only after the content reaches the `Ready` state.
 
-- HLS delivery for broad device support.
-- DASH delivery for compatible players and platforms.
-- Progressive MP4 files for direct download or simple embeds.
+## Next steps
 
-### Player and SDK support
+- To upload your first asset, see [Uploading Videos (Dashboard & API)](/vod-uploading-ingesting).
 
-- API-accessible playback URLs suitable for use with the players described in [Players, SDKs & Embeds](/players-sdks-embeds).
-- Consistent URL structure for both VOD and live outputs.
+- To monitor processing and lifecycle states, see [Monitoring Processing & Content Status](/analytics-overview).
 
-### Analytics integration
+- To embed and play your processed video, see [Playing Videos (Web & App Integration)](/web-sdk-player).
 
-- Playback and engagement analytics available across outputs.
-- Metrics surfaced through the pages listed under the Analytics & Monitoring section, such as [Analytics Overview](/analytics-overview).

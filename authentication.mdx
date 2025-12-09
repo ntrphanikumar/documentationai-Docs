@@ -1,114 +1,132 @@
 ---
-title: Authentication
-description: Learn how to authenticate and manage access to Videograph (Docs)
+title: Authentication & Access Control
+description: >-
+  Learn how Videograph secures all API access using environment‑scoped access
+  tokens and secret keys.
 ---
+## How authentication works
 
-## Authentication Methods
+All Videograph APIs are secured. Every request must include a valid API access token and secret key created from your organization environment in the dashboard. Each token pair is strictly scoped to that environment.
 
-Videograph (Docs) supports multiple authentication methods to ensure secure access to your documentation. Choose the method that best fits your organization's security requirements and user management preferences.
+<Callout kind="info" collapsed="false">
+  A token generated in one organization environment cannot access resources in another.
+</Callout>
 
-<Columns cols={2}>
-  <Card title="Single Sign-On" icon="shield" href="#sso">
-    Integrate with your identity provider for seamless authentication.
-  </Card>
-  <Card title="API Keys" icon="key" href="#api-keys">
-    Generate and manage API keys for programmatic access.
-  </Card>
-</Columns>
+API access tokens define what environment your request operates in, ensuring isolation across development, staging, and production environments.
 
-## Setting Up SSO
+## Generating API credentials
 
-Single Sign-On (SSO) allows your team members to access Videograph (Docs) using their existing corporate credentials. This reduces password fatigue and simplifies user management.
+Use this procedure whenever you need a new token and secret for backend or server‑side integrations.
 
 <Steps>
-  <Step title="Choose Provider" icon="settings">
-    Select your identity provider from supported options including Okta, Azure AD, Google Workspace, and SAML 2.0.
+  <Step title="Open your organization environment dashboard" title-type="p">
+    Navigate to the environment where the API token will be used. All tokens are tied to this specific environment.
   </Step>
-  <Step title="Configure Settings" icon="sliders">
-    Enter your provider's configuration details such as entity ID, SSO URL, and certificate.
+
+  <Step title="Create a new API access token" title-type="p">
+    Find the API credentials section and generate a new token and secret key. Copy both values immediately; the secret is shown only once.
   </Step>
-  <Step title="Test Connection" icon="check-circle">
-    Verify the integration works correctly by testing the login flow.
-  </Step>
-  <Step title="Enable for Users" icon="users">
-    Assign the SSO authentication method to your workspace users.
+
+  <Step title="Store credentials securely" title-type="p">
+    Save the token and secret in a secure system such as environment variables or a secrets manager.
   </Step>
 </Steps>
 
-<Callout kind="info">
-  Note: SSO setup requires administrative privileges and may take up to 24 hours for full propagation.
+<Callout kind="tip" collapsed="false">
+  Rotate tokens periodically and delete credentials you no longer use.
 </Callout>
 
-## API Key Management
+## Using tokens with the API
 
-API keys provide secure programmatic access to Videograph (Docs) resources. Use API keys for integrations, automation scripts, and third-party applications.
+All Videograph endpoints accept basic authentication using your token and secret key.
 
-<Tabs>
-  <Tab title="Generating Keys" icon="plus">
-    To generate a new API key, navigate to Settings > API Keys and click "Create New Key". Choose appropriate permissions and set an expiration date if needed.
-  </Tab>
-  <Tab title="Managing Keys" icon="settings">
-    View all active API keys, revoke compromised keys, and monitor usage statistics. Each key shows creation date, last used timestamp, and associated permissions.
-  </Tab>
-  <Tab title="Best Practices" icon="shield">
-    Rotate keys regularly, use environment variables for storage, and monitor for unusual activity. Never commit API keys to version control systems.
-  </Tab>
-</Tabs>
+### Basic auth example (curl)
 
-<CodeGroup tabs="JavaScript,Python">
+```bash
+curl --request POST \
+  --url https://api.videograph.ai/video/services/api/v1/contents \
+  -u "YOUR_ACCESS_TOKEN:YOUR_SECRET_KEY" \
+  --header "content-type: application/json" \
+  --data '{"title":"Sample upload"}'
+```
+
+### Basic auth example (SDK-style request)
+
+<CodeGroup show-lines="true" tabs={[]}>
   ```javascript
-// Authenticate with API key
-const headers = {
-  'Authorization': `Bearer ${process.env.VIDEOGRAPH_API_KEY}`,
-  'Content-Type': 'application/json'
-};
+  import fetch from "node-fetch";
 
-fetch('/api/documents', { headers })
-  .then(response => response.json())
-  .then(data => console.log(data));
+  const token = process.env.VG_TOKEN;
+  const secret = process.env.VG_SECRET;
+
+  const creds = Buffer.from(`${token}:${secret}`).toString("base64");
+
+  const res = await fetch(
+    "https://api.videograph.ai/video/services/api/v1/contents",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": `Basic ${creds}`,
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({ title: "My video" })
+    }
+  );
+
+  console.log(await res.json());
   ```
+
   ```python
-import os
-import requests
+  import os
+  import base64
+  import requests
 
-api_key = os.getenv('VIDEOGRAPH_API_KEY')
-headers = {
-    'Authorization': f'Bearer {api_key}',
-    'Content-Type': 'application/json'
-}
+  token = os.getenv("VG_TOKEN")
+  secret = os.getenv("VG_SECRET")
 
-response = requests.get('/api/documents', headers=headers)
-print(response.json())
+  creds = base64.b64encode(f"{token}:{secret}".encode("utf-8")).decode("utf-8")
+
+  headers = {
+      "Authorization": f"Basic {creds}",
+      "content-type": "application/json",
+  }
+
+  response = requests.get(
+      "https://api.videograph.ai/video/services/api/v1/livestreams",
+      headers=headers,
+  )
+
+  print(response.json())
   ```
 </CodeGroup>
 
-<ExpandableGroup>
-  <Expandable title="What permissions can I assign to API keys?" default-open="false">
-    API keys support granular permissions including read-only access, document creation, editing rights, workspace management, and administrative controls. You can create custom permission sets or use predefined roles like Viewer, Editor, and Admin.
-  </Expandable>
-  <Expandable title="How do I revoke an API key?" default-open="false">
-    Go to Settings > API Keys, find the key you want to revoke, and click the "Revoke" button. Revoked keys become invalid immediately and cannot be restored. You'll need to generate a new key and update any integrations.
-  </Expandable>
-  <Expandable title="Can I use both SSO and API keys?" default-open="false">
-    Yes, you can use SSO for user authentication while still using API keys for programmatic access. API keys are separate from user accounts and maintain their own permission sets.
-  </Expandable>
-</ExpandableGroup>
+## Environment scoping
 
-<Callout kind="danger">
-  Security warning: Never share API keys publicly or store them in insecure locations. Use environment variables and rotate keys regularly to maintain security.
+Access tokens are limited to the organization environment where they were created. This ensures:
+
+- A token cannot access data or APIs belonging to another environment.
+
+- Each environment (such as development, staging, or production) is fully isolated.
+
+- Token behavior is restricted to the environment’s configuration and permissions defined in the dashboard.
+
+<Callout kind="info" collapsed="false">
+  Tokens do not grant cross‑environment access. Always generate credentials inside the environment where the API integration operates.
 </Callout>
 
-## User Roles and Permissions
+## Security best practices
 
-Videograph (Docs) uses a role-based access control system to manage user permissions within workspaces and documents.
+To protect your video workflows and ensure proper isolation:
 
-| Role | Description | Permissions |
-|------|-------------|-------------|
-| Viewer | Read-only access | View documents, search content |
-| Editor | Standard editing | View, edit, create documents |
-| Admin | Full control | All editor permissions plus user management, settings |
-| Owner | Ultimate control | All admin permissions plus billing, workspace deletion |
+- Store all tokens and secrets in a secure secrets manager or environment variables.
 
-<Callout kind="tip">
-  Assign the minimum required permissions for each user to follow the principle of least privilege.
+- Rotate credentials regularly.
+
+- Revoke tokens immediately if you suspect exposure.
+
+- Use separate organization environments for development, staging, and production.
+
+<Callout kind="danger" collapsed="false">
+  Never embed tokens or secrets in client‑side code, logs, or version control.
 </Callout>
+

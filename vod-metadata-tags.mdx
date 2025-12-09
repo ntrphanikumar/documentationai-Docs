@@ -1,74 +1,143 @@
 ---
-title: Metadata, Tags & Organization
-description: Learn how to describe and organize VOD assets in Videograph using core metadata fields, tags, and organizational structures like playlists, channels, and workspaces.
+title: Managing Video Content
+description: >-
+  Understand the fields returned after creating VOD content, and how they help
+  you track processing status and enable playback flows.
 ---
+## Overview
 
-## Why metadata matters
+After you upload or create a video through the API, the service responds with a structured content object. This object includes identifiers, lifecycle status, metadata fields, and playback‑related properties you will reference in later requests.
 
-Metadata helps you make video catalogs searchable, sortable, and maintainable at scale. Videograph supports structured fields such as title, description, duration, and thumbnails, along with flexible custom key-value pairs for business-specific data. Tags offer lightweight labeling for search, recommendations, and workflow grouping.
+This page explains the key fields from the creation response and how they fit into the broader workflow. For guidance on uploading, see [Uploading Videos (Dashboard & API)](/vod-uploading-ingesting). For playback usage, see [Playing Videos (Web & App Integration)](/web-sdk-player).
 
-## Core metadata fields
+## Example creation response
 
-Common fields you can set on an asset include:
+The following response reflects what you receive immediately after a successful content creation request. Values may vary depending on your workflow.
 
-- Title and short description
-- Duration and thumbnails
-- Season and episode identifiers
-- Rating or content classification
-- Custom key-value fields for editorial, rights, or workflow needs
+<Request show-lines="true" tabs={[]}>
+  ```json
+  {
+    "code": 200,
+    "data": {
+      "contentId": "fa6d3dc8-c78c-4c67-98ef",
+      "created_at": 1673353801033,
+      "description": "",
+      "duration": 0,
+      "metadata": [],
+      "mp4_support": true,
+      "playbackPolicy": [
+        "public"
+      ],
+      "save_original_copy": false,
+      "status": "Pending",
+      "statusId": 1,
+      "test_video": true,
+      "title": "Demo Video"
+    },
+    "message": "Data success",
+    "status": "Success"
+  }
+  ```
+</Request>
 
-These fields travel with the asset across the ingest, processing, and delivery pipeline.
+## Core identifiers
 
-## Tags and taxonomies
+These fields uniquely identify the asset and anchor all future operations.
 
-Tags allow fast, lightweight labeling so you can:
+<ExpandableGroup>
+  <Expandable title="contentId" default-open="false">
+    The stable identifier for the VOD asset. Use this value when checking processing status, updating metadata, or generating playback information.
+  </Expandable>
 
-- Power faceted search in internal tools or apps
-- Enable recommendation engines
-- Drive workflows such as QC, editorial review, or rights checks
+  <Expandable title="created_at" default-open="false">
+    A timestamp (milliseconds) marking when the asset record was created. This can be used for sorting or catalog operations.
+  </Expandable>
+</ExpandableGroup>
 
-Tags can be flat or implemented as internal taxonomies you maintain. Use consistent naming patterns to keep catalogs clean.
+## Metadata and descriptive fields
 
-<Callout kind="info">
+These fields help you label and organize the asset. They generally reflect information supplied at creation time.
 
-  Consistency is key. Align naming, casing, and tag patterns across teams to ensure your catalog stays discoverable and predictable.
+<ExpandableGroup>
+  <Expandable title="title" default-open="false">
+    The user‑visible name of the asset, shown in dashboards and typically displayed in playback interfaces.
+  </Expandable>
 
+  <Expandable title="description" default-open="false">
+    Optional descriptive text for cataloging or UI display.
+  </Expandable>
+
+  <Expandable title="metadata" default-open="false">
+    A list intended for custom structured values you supply. Common uses include categorization, editorial notes, or workflow flags.
+  </Expandable>
+
+  <Expandable title="duration" default-open="false">
+    Initially set to `0`. Once processing finishes, this updates to the actual media duration in seconds.
+  </Expandable>
+</ExpandableGroup>
+
+## Processing and readiness status
+
+The service begins preparing your video as soon as the content record is created. These fields tell you whether the asset is ready to play.
+
+<Callout kind="info" collapsed="false">
+  After creation, the asset often begins in `Pending` or `Preparing`. Most workflows check status before generating or using playback URLs.
 </Callout>
 
-## Organizational patterns
+<Response show-lines="true" tabs={[]}>
+  ```json
+  {
+    "status": "Pending",
+    "statusId": 1
+  }
+  ```
+</Response>
 
-Videograph assets can be grouped into several structures:
+### How to use these fields
 
-### Playlists
+- Poll the content endpoint (see the API reference) using the `contentId`.
 
-Use playlists to present ordered collections of assets, such as episodes, modules, or themed bundles. They are ideal when sequence or curation matters.
+- When status transitions to a ready value, duration and playback assets become available.
 
-### Channels
+- You can then allow clients, apps, or services to request playback URLs.
 
-Channels act as logical groupings that can mix live streams and VOD assets. They help organize content by brand, category, or theme.
+## Playback‑related properties
 
-### Workspaces
+These fields control or describe how playback can occur later.
 
-Workspaces often map to environments or business units. They isolate assets, channels, and playlists so teams can work independently while keeping governance clear.
+<ExpandableGroup>
+  <Expandable title="playbackPolicy" default-open="false">
+    An array of policy rules such as `public`, which determines who can retrieve playback URLs. Policies map directly to player authorization requirements.
+  </Expandable>
 
-## Example asset metadata
+  <Expandable title="mp4_support" default-open="false">
+    Indicates whether the service will generate an MP4 rendition for direct file delivery.
+  </Expandable>
 
-Below is a simplified example showing structured metadata and tags on a single asset.
+  <Expandable title="save_original_copy" default-open="false">
+    Specifies whether the original uploaded media file is retained.
+  </Expandable>
 
-```json
-{
-  "title": "Episode 3: The Journey",
-  "description": "Exploring the next chapter of the story.",
-  "duration": 1420,
-  "season": 1,
-  "episode": 3,
-  "thumbnails": [
-    "https://cdn.example.com/thumbs/ep3-small.jpg"
-  ],
-  "custom": {
-    "rating": "PG-13",
-    "rightsRegion": "US"
-  },
-  "tags": ["adventure", "featured", "season1"]
-}
-```
+  <Expandable title="test_video" default-open="false">
+    A flag that identifies whether the asset was created using a test or sample flow.
+  </Expandable>
+</ExpandableGroup>
+
+## Using the content object in your workflow
+
+The creation response enables the two most common next steps:
+
+<Steps>
+  <Step title="Check status" icon="server" title-type="p">
+    Query the asset using the `contentId` until `status` indicates readiness. Refer to [Monitoring Processing & Content Status](/analytics-overview) for related concepts.
+  </Step>
+
+  <Step title="Play the video" icon="play" title-type="p">
+    Once the asset is ready, request playback URLs according to your `playbackPolicy`. Integration details are available in [Playing Videos (Web & App Integration)](/web-sdk-player).
+  </Step>
+</Steps>
+
+<Callout kind="success" collapsed="false">
+  The creation response is your source of truth for tracking the asset from upload to playback. Keep the `contentId` available in your application or workflow to streamline later calls.
+</Callout>
+

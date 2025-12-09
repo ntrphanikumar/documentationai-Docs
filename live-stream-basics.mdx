@@ -1,67 +1,94 @@
 ---
-title: "Live Stream Basics"
-description: "Key concepts for understanding ingest, lifecycle states, latency, and playback behavior for live streaming in Videograph."
+title: Live Streaming Overview
+description: >-
+  How live streams are created, ingested, recorded, and played back using
+  Videograph APIs.
 ---
-
 ## Overview
 
-A live stream in Videograph represents an ingest endpoint plus the configuration and state that control how real‑time video is processed and delivered. Encoders publish RTMP or SRT to the ingest URL, Videograph processes segments as they arrive, and viewers receive adaptive HLS output.
+A live stream in Videograph represents an ingest point that accepts real‑time media from an encoder and turns it into an HLS playback stream. You create the stream through an HTTP API, publish to the returned RTMP ingest URL, and play the resulting adaptive output from the `playbackUrl`.
 
-<Callout kind="info">
-
-You can safely experiment with live stream creation and encoder settings in a non‑production workspace before going live for end users.
-
+<Callout kind="info" collapsed="false">
+  You can safely prototype live streaming in a test workspace before configuring production ingest endpoints.
 </Callout>
 
-Live streams can optionally be recorded and later converted into VOD assets. For details on the broader media pipeline, see [Video Pipeline: Ingest, Process, Deliver](/core-video-pipeline).
+When you create a stream using the endpoint `POST /video/services/api/v1/livestreams`, you provide a title, a region, and a boolean `record` flag. The API responds with the ingest information your encoder needs: `rtmpUrl`, `streamKey`, `streamUUID`, `playbackUrl`, and an initial status of `Idle`.
 
-## Live stream lifecycle
+## Creating a live stream
 
-A stream transitions through several states as it moves from idle to live output:
+The minimal request requires three fields:
 
-- **idle**: The stream exists but is not expecting or receiving input.
-- **waiting_for_input**: Videograph is ready for incoming media but has not yet detected a valid signal.
-- **live**: Segments are being ingested and processed; playback is available to viewers.
-- **stopping**: The encoder has disconnected and Videograph is finalizing segments.
-- **ended**: Live processing has completed.
+- `title`: A human‑readable name for the stream.
 
-### Minimal state diagram (text form)
+- `region`: A deployment region such as `us-east-1`.
 
+- `record`: A boolean that determines whether Videograph records the session.
+
+<Request show-lines="true" tabs={[]}>
+  ```bash
+  curl --request POST \
+    --url https://api.videograph.ai/video/services/api/v1/livestreams \
+    --header "accept: application/json" \
+    --header "content-type: application/json" \
+    --data '{ "title": "Live stream", "region": "us-east-1", "record": false }'
+  ```
+</Request>
+
+<Response show-lines="true" tabs={[]}>
+  ```json
+  {
+    "code": 200,
+    "data": {
+      "createdOn": 1673595417480,
+      "metadata": [],
+      "playbackUrl": "PLAYBACKURL",
+      "rtmpUrl": "RTMP URL",
+      "status": "Idle",
+      "streamKey": "STREAMKEY",
+      "streamUUID": "271dc169-da00-4f4e-bdc8-01c13f827eb9",
+      "title": "live stream"
+    },
+    "message": "Livestream details with id: 271dc169-da00-4f4e-bdc8-01c13f827eb9",
+    "status": "Success"
+  }
+  ```
+</Response>
+
+The returned ingest information is used directly by your encoder. You typically configure your encoder with the base RTMP server URL and supply the `streamKey` as the stream identifier.
+
+## RTMP ingest URLs
+
+Videograph exposes two RTMP ingest base URLs. The URL you use depends on the `record` parameter you set at stream creation time.
+
+| Use case                                     | Base RTMP server URL                   | Behavior                                                                                 |
+| -------------------------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Recording enabled (`record` set to `true`)   | rtmp\://rc-ingest.in.videograph.ai/rec | Stream is recorded. Recorded content remains available for 12 hours from the start time. |
+| Recording disabled (`record` set to `false`) | rtmp\://ingest.in.videograph.ai/live   | Stream is not recorded.                                                                  |
+
+<Callout kind="tip" collapsed="false">
+  Your encoder should publish to the base RTMP URL returned in `rtmpUrl` and append the `streamKey` exactly as provided.
+</Callout>
+
+## Playing the live stream
+
+As soon as Videograph begins receiving valid media, it generates adaptive HLS output available at the `playbackUrl` returned during creation. You can embed this URL in any HLS‑compatible player or integrate it into your app.
+
+For player integration guidance, see [Playing Videos (Web & App Integration)](/web-sdk-player).
+
+## Understanding the live stream lifecycle
+
+Immediately after creation, a stream is in an `Idle` state. When your encoder connects and begins pushing media, Videograph starts processing segments and updates the playback output. When the encoder disconnects, the system finalizes the session.
+
+```mermaid
+graph TD
+  A[Idle] --> B[Input detected]
+  B --> C[Live]
+  C --> D[Encoder disconnected]
+  D --> E[Session finalized]
 ```
-idle
-  ↓
-waiting_for_input
-  ↓
-live
-  ↓
-stopping
-  ↓
-ended
-```
 
-## Ingest options
+This simplified flow captures the high‑level transitions relevant for most integrations.
 
-Videograph supports industry‑standard publish protocols:
+## Next steps
 
-- **RTMP**: Common in hardware and software encoders; suitable for most workflows.
-- **SRT**: Provides improved resilience on unstable networks and better error recovery.
-
-When you create a live stream, Videograph generates one or more ingest URLs. Configure your encoder to use the endpoint along with any required stream key.
-
-### Considerations for ingest setup
-
-- Monitor encoder bitrate and network stability.
-- Ensure the encoder uses a supported container and codec configuration (for example, H.264 and AAC).
-- Maintain time‑synchronized audio and video to prevent drift.
-
-## Playback behavior
-
-Once the stream enters the **live** state, Videograph generates HLS output variants. A player selects the appropriate rendition and updates segments as they appear.
-
-Key playback characteristics:
-
-- **Adaptive formats**: Viewers receive HLS segments that adapt to network conditions.
-- **Startup time**: Initial playback may require a short buffer of segments.
-- **Latency**: End‑to‑end latency depends on encoder configuration, segment duration, and player buffering. Shorter segment durations can reduce latency but may increase overhead.
-
-For details on using Videograph players or embedding playback in your application, see [Players, SDKs & Embeds](/players-sdks-embeds).
+To learn how to publish video, enable recording, and work with the resulting outputs, continue with the detailed guide: [Creating, Streaming & Recording Live Sessions](/live-recording-vod).

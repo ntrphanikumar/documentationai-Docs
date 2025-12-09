@@ -1,86 +1,69 @@
 ---
 title: Introduction to Videograph
-description: A high-level overview of Videograph for developers getting started with VOD and live streaming using Videograph&apos;s APIs.
+description: >-
+  A high-level overview of Videograph for developers getting started with VOD
+  and live streaming using Videograph&apos;s plug-and-play video APIs.
 ---
-
 <Image src="https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765201127065-e9ocn95imv-pasted-image-1765201124890.png?q=85&fm=auto&auto=compress%2Cformat" width="2400" height="1200" alt="Overview illustration for Videograph video platform" />
 
 ## What Videograph provides
 
-Videograph is a plug-and-play platform for uploading, processing, and streaming video. It supports both video on demand (VOD) and live streaming through simple, environment-scoped APIs. You work inside an organization environment, where you create VOD content, run live streams, and generate API credentials.
+Videograph offers plug-and-play APIs for adding video on demand (VOD) and live streaming to your application. With a single API call, you can upload, stream, or publish content across devices using adaptive HLS playback.
 
-All operations use the same high-level flow:
+You work inside an organization environment, where each environment holds its own content and access credentials.
 
-- Provide video input (file upload or remote URL for VOD; RTMP/RTMPS ingest for live).
-- Videograph processes the content into adaptive streaming outputs.
-- Your application retrieves an HLS playback URL or identifier for distribution.
-
-<Callout kind="info">
-
-  All API calls require Basic authentication using an access token and secret generated for a specific organization environment. For details, see [Authentication & Access Control](/authentication).
-
+<Callout kind="info" collapsed="false">
+  To begin, create a free Videograph account and generate access tokens in your environment. All API calls use Basic authentication. See [Authentication & Access Control](/authentication).
 </Callout>
 
-## Core workflow
+## Core getting-started flow
 
-The following steps summarize how VOD and live streaming behave at a high level.
+Videograph centers on three essential flows that every developer uses when integrating video:
 
 <Steps>
-  <Step title="Provide input" icon="upload" titleType="p">
-
-    For VOD, you create content by supplying a title, a `content` array with at least one source `url`, and optional playback configuration.  
-    For live streaming, you create a live stream by specifying fields such as `title`, `region`, and `record`. Videograph returns ingest endpoints (`rtmpUrl`, `rtmpsUrl`) and a `streamKey`.
-
+  <Step title="Authenticate your requests" icon="key" title-type="p">
+    Generate an access token and secret within your environment.\
+    Use them as Basic auth credentials in every API call.\
+    Follow the setup steps in [Authentication & Access Control](/authentication).
   </Step>
 
-  <Step title="Processing" icon="settings" titleType="p">
-
-    Videograph processes VOD inputs into streamed renditions.  
-    For live, once your encoder pushes RTMP or RTMPS input, the stream transitions through statuses such as `Idle` or other initialization states before becoming playable.
-
+  <Step title="Add video on demand" icon="upload" title-type="p">
+    Create VOD content by supplying a title and a `content` array containing at least one source URL.\
+    Videograph processes the file and returns a playback identifier for HLS delivery.\
+    Start with [Uploading Videos (Dashboard & API)](/vod-uploading-ingesting).
   </Step>
 
-  <Step title="Playback" icon="play-circle" titleType="p">
-
-    VOD content exposes a playback identifier when ready.  
-    Live streams provide fields such as `playbackUrl` for HLS distribution.
-
-    You can integrate these URLs with any HLS-capable player or with the Web player documented in [Playing Videos (Web & App Integration)](/web-sdk-player).
-
+  <Step title="Create live streams" icon="cast" title-type="p">
+    Create a live stream with fields such as `title`, `region`, and `record`.\
+    Videograph returns ingest URLs and a stream key for your encoder.\
+    Once active, the stream exposes an HLS playback URL.\
+    Learn more in [Live Streaming Overview](/live-stream-basics).
   </Step>
 </Steps>
 
-<Callout kind="info">
-
-  For deeper detail on ingest, processing, and playback identifiers, see [Content Model & Playback Basics](/core-video-pipeline).
-
+<Callout kind="info" collapsed="false">
+  For details on how Videograph handles ingest, processing, and playback identifiers across VOD and live, see [Content Model & Playback Basics](/core-video-pipeline).
 </Callout>
 
-## Environments and video management
+## Environments
 
-Videograph scopes all assets and API credentials to an organization environment. Each environment contains its own VOD content, live streams, and access tokens. Common patterns include maintaining separate development, staging, and production environments, each with its own keys and data.
+Each organization environment maintains separate VOD content, live streams, and API credentials. This makes it easy to keep development, staging, and production isolated.
 
 ## Dashboard overview
 
-The Videograph dashboard lets you manage VOD and live streaming resources for your environment:
+The Videograph dashboard provides a visual interface for managing resources in your environment.
 
-<Columns cols={3}>
-  <Card title="Content management" href="/vod-uploading-ingesting" icon="video">
-
-    Upload or ingest VOD assets, monitor processing, and retrieve playback identifiers.
-
+<Columns cols="3">
+  <Card title="Content management" href="/vod-uploading-ingesting" icon="video" horizontal="false">
+    Upload VOD assets, monitor processing, and retrieve playback identifiers.
   </Card>
 
-  <Card title="Live streaming" href="/live-stream-basics" icon="cast">
-
-    Create live streams, obtain RTMP or RTMPS ingest URLs, and access playback endpoints.
-
+  <Card title="Live streaming" href="/live-stream-basics" icon="cast" horizontal="false">
+    Create live streams, obtain ingest URLs, and access playback endpoints.
   </Card>
 
-  <Card title="API credentials" href="/authentication" icon="key">
-
-    Generate environment-scoped access tokens and secrets to authenticate API requests.
-
+  <Card title="API credentials" href="/authentication" icon="key" horizontal="false">
+    Generate access tokens and secrets for authenticated API requests.
   </Card>
 </Columns>
 
@@ -88,48 +71,43 @@ The Videograph dashboard lets you manage VOD and live streaming resources for yo
 
 <Tabs>
   <Tab title="Video on Demand" icon="film">
+    - Submit a title and a `content` array with one or more source URLs.
 
-    - Create content by supplying a title, a `content` array of source URLs, and a `playback_policy` list (for example `public` or `signed`).  
-    - Wait for Videograph to process renditions.  
-    - Use the returned playback identifier with your HLS player.  
+    - Videograph processes the file into adaptive streaming formats.
+
+    - Use the returned playback identifier with any HLS player.
+
     - Start with [Uploading Videos (Dashboard & API)](/vod-uploading-ingesting).
-
   </Tab>
 
   <Tab title="Live streaming" icon="cast">
+    - Create a live stream with minimal required fields.
 
-    - Create a live stream with `title`, `region`, and `record` settings.  
-    - Use the returned `rtmpUrl` or `rtmpsUrl` and `streamKey` to push input from your encoder.  
-    - Retrieve the `playbackUrl` for HLS playback once the stream becomes active.  
+    - Push RTMP or RTMPS input using the provided ingest endpoints.
+
+    - Retrieve the `playbackUrl` once the stream becomes active.
+
     - Learn more in [Live Streaming Overview](/live-stream-basics).
-
   </Tab>
 </Tabs>
 
 ## Where to go next
 
-<Columns cols={2}>
-  <Card title="Authentication & Access Control" href="/authentication" icon="key">
-
-    Learn how environment-scoped tokens and secrets work and how to call the API securely.
-
+<Columns cols="2">
+  <Card title="Authentication & Access Control" href="/authentication" icon="key" horizontal="false">
+    Generate environment-scoped tokens and authenticate API calls.
   </Card>
 
-  <Card title="Content Model & Playback Basics" href="/core-video-pipeline" icon="layers">
-
-    Understand how content objects and playback identifiers behave across VOD and live.
-
+  <Card title="Content Model & Playback Basics" href="/core-video-pipeline" icon="layers" horizontal="false">
+    Understand how content objects and playback identifiers work.
   </Card>
 
-  <Card title="VOD Overview" href="/vod-uploading-ingesting" icon="tv-minimal-play" target="_self">
-
-    Follow the upload guide to create your first VOD asset using a file or remote URL.
-
+  <Card title="VOD Overview" href="/vod-uploading-ingesting" icon="tv-minimal-play" horizontal="false" target="_self">
+    Upload your first VOD asset using a file or remote URL.
   </Card>
 
-  <Card title="Live Streaming Overview" href="/live-stream-basics" icon="cast">
-
-    Create a live stream, connect your RTMP encoder, and publish HLS playback.
-
+  <Card title="Live Streaming Overview" href="/live-stream-basics" icon="cast" horizontal="false">
+    Create your first live stream, connect an encoder, and publish using HLS.
   </Card>
 </Columns>
+
