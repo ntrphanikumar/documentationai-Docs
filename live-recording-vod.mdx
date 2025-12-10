@@ -48,6 +48,12 @@ curl --request POST \
 
 Setting `"record": false` creates a non‑recorded live stream.
 
+The dashboard shows separate views for streams created with recording enabled and disabled.
+
+<Image src="https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765361261485-3f1a3bvwgpl-image-aa.jpg?q=85&fm=auto&auto=compress%2Cformat" alt="" width="800" height="450" />
+
+<Image src="https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765361334485-ulbhota2r7s-image-bb.jpg?q=85&fm=auto&auto=compress%2Cformat" alt="" width="800" height="450" />
+
   </Step>
 
   <Step title="Interpret and store the response" icon="database">
@@ -91,12 +97,20 @@ In OBS or another RTMP encoder:
 
 Once the stream is received, it becomes playable using the returned HLS `playbackUrl`.
 
+The screenshot below shows an example OBS configuration with the RTMP server URL and stream key.
+
+<Image src="https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765361347190-4ij7u95xnwb-image-cc.jpg?q=85&fm=auto&auto=compress%2Cformat" alt="" width="800" height="450" />
+
   </Step>
 
   <Step title="Watch the live stream via HLS" icon="play-circle">
 
   
 Use the `playbackUrl` in any HLS‑capable player. See [Playing Videos (Web & App Integration)](/web-sdk-player) for common integration patterns.
+
+The HLS playback URL is also visible directly in the Videograph dashboard.
+
+<Image src="https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765361379451-utki8adi3un-image-f.jpg?q=85&fm=auto&auto=compress%2Cformat" alt="" width="800" height="450" />
 
   </Step>
 
@@ -118,6 +132,10 @@ curl --request GET \
 </CodeGroup>
 
 For editing metadata or managing tags later, see [Managing Video Content](/vod-metadata-tags).
+
+You can also manage the live stream and recorded sessions from the dashboard's Live Stream or Live Recording menus, including clips, metadata, and lifecycle actions.
+
+<Image src="https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765361400692-fu6vf7xih7f-image-h.jpg?q=85&fm=auto&auto=compress%2Cformat" alt="" width="800" height="450" />
 
   </Step>
 
