@@ -1,16 +1,15 @@
 ---
 title: Authentication & Access Control
-description: Learn how Videograph secures all API access using environment‑scoped access tokens and secret keys.
+description: >-
+  Learn how Videograph secures all API access using environment‑scoped access
+  tokens and secret keys.
 ---
-
 ## How authentication works
 
 All Videograph APIs are secured. Every request must include a valid API access token and secret key created from your organization environment in the dashboard. Each token pair is strictly scoped to that environment.
 
-<Callout kind="info">
-  
+<Callout kind="info" collapsed="false">
   A token generated in one organization environment cannot access resources in another.
-
 </Callout>
 
 API access tokens define what environment your request operates in, ensuring isolation across development, staging, and production environments.
@@ -20,33 +19,25 @@ API access tokens define what environment your request operates in, ensuring iso
 Use this procedure whenever you need a new token and secret for backend or server‑side integrations.
 
 <Steps>
-  <Step title="Open your organization environment dashboard" titleType="p">
-    
+  <Step title="Open your organization environment dashboard" title-type="p">
     Navigate to the environment where the API token will be used. All tokens are tied to this specific environment.
-
   </Step>
 
-  <Step title="Create a new API access token" titleType="p">
-    
+  <Step title="Create a new API access token" title-type="p">
     Find the API credentials section and generate a new token and secret key. Copy both values immediately; the secret is shown only once.
 
     The screenshot below shows the Settings page with the API Access Tokens tab selected.
 
     <Image src="https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765359511210-4r4jk0q1c56-pasted-image-1765359509154.png?q=85&fm=auto&auto=compress%2Cformat" width="1600" height="497" alt="" />
-
   </Step>
 
-  <Step title="Store credentials securely" titleType="p">
-    
+  <Step title="Store credentials securely" title-type="p">
     Save the token and secret in a secure system such as environment variables or a secrets manager.
-
   </Step>
 </Steps>
 
-<Callout kind="tip">
-  
+<Callout kind="tip" collapsed="false">
   Rotate tokens periodically and delete credentials you no longer use.
-
 </Callout>
 
 ## Using tokens with the API
@@ -65,52 +56,52 @@ curl --request POST \
 
 ### Basic auth example (SDK-style request)
 
-<CodeGroup show-lines={true} tabs="">
-```javascript
-import fetch from "node-fetch";
+<CodeGroup show-lines="true" tabs={[]}>
+  ```javascript
+  import fetch from "node-fetch";
 
-const token = process.env.VG_TOKEN;
-const secret = process.env.VG_SECRET;
+  const token = process.env.VG_TOKEN;
+  const secret = process.env.VG_SECRET;
 
-const creds = Buffer.from(`${token}:${secret}`).toString("base64");
+  const creds = Buffer.from(`${token}:${secret}`).toString("base64");
 
-const res = await fetch(
-  "https://api.videograph.ai/video/services/api/v1/contents",
-  {
-    method: "POST",
-    headers: {
-      "Authorization": `Basic ${creds}`,
-      "content-type": "application/json"
-    },
-    body: JSON.stringify({ title: "My video" })
+  const res = await fetch(
+    "https://api.videograph.ai/video/services/api/v1/contents",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": `Basic ${creds}`,
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({ title: "My video" })
+    }
+  );
+
+  console.log(await res.json());
+  ```
+
+  ```python
+  import os
+  import base64
+  import requests
+
+  token = os.getenv("VG_TOKEN")
+  secret = os.getenv("VG_SECRET")
+
+  creds = base64.b64encode(f"{token}:{secret}`.encode("utf-8")).decode("utf-8")
+
+  headers = {
+      "Authorization": f"Basic {creds}",
+      "content-type": "application/json",
   }
-);
 
-console.log(await res.json());
-```
+  response = requests.get(
+      "https://api.videograph.ai/video/services/api/v1/livestreams",
+      headers=headers,
+  )
 
-```python
-import os
-import base64
-import requests
-
-token = os.getenv("VG_TOKEN")
-secret = os.getenv("VG_SECRET")
-
-creds = base64.b64encode(f"{token}:{secret}`.encode("utf-8")).decode("utf-8")
-
-headers = {
-    "Authorization": f"Basic {creds}",
-    "content-type": "application/json",
-}
-
-response = requests.get(
-    "https://api.videograph.ai/video/services/api/v1/livestreams",
-    headers=headers,
-)
-
-print(response.json())
-```
+  print(response.json())
+  ```
 </CodeGroup>
 
 ## Environment scoping
@@ -118,17 +109,19 @@ print(response.json())
 Access tokens are limited to the organization environment where they were created. This ensures:
 
 - A token cannot access data or APIs belonging to another environment.
+
 - Each environment (such as development, staging, or production) is fully isolated.
+
 - Token behavior is restricted to the environment’s configuration and permissions defined in the dashboard.
 
 The screenshot below shows the dialog where you select the environment and permissions when creating a new token.
 
+<Image src="https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765360109818-lkb54qhob59-pasted-image-1765360107249.png?q=85&fm=auto&auto=compress%2Cformat" width="1600" height="476" alt="" />
+
 <Image src="https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765359519119-vfia9n34np-pasted-image-1765359517577.png?q=85&fm=auto&auto=compress%2Cformat" width="1600" height="476" alt="" />
 
-<Callout kind="info">
-  
+<Callout kind="info" collapsed="false">
   Tokens do not grant cross‑environment access. Always generate credentials inside the environment where the API integration operates.
-
 </Callout>
 
 ## Security best practices
@@ -136,12 +129,14 @@ The screenshot below shows the dialog where you select the environment and permi
 To protect your video workflows and ensure proper isolation:
 
 - Store all tokens and secrets in a secure secrets manager or environment variables.
+
 - Rotate credentials regularly.
+
 - Revoke tokens immediately if you suspect exposure.
+
 - Use separate organization environments for development, staging, and production.
 
-<Callout kind="danger">
-  
+<Callout kind="danger" collapsed="false">
   Never embed tokens or secrets in client‑side code, logs, or version control.
-
 </Callout>
+
