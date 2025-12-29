@@ -24,7 +24,7 @@ info:
         An api access token's scope is limited to an organization's environment and
         so with the APIs we can manage assets within the environment. In addition
         api token can be granted only limited read/write access to product types
-        which provides authorization
+        which provides authorization..
     version: 1.0.0
 servers:
     - url: https://api.videograph.ai
