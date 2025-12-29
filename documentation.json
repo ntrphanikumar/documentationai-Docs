@@ -1,1 +1,142 @@
-"{\n  \"name\": \"Videograph Documentation\",\n  \"initialRoute\": \"introduction\",\n  \"colors\": {\n    \"light\": {\n      \"brand\": \"#3B82F6\",\n      \"heading\": \"#1a1a1a\",\n      \"text\": \"#374151\"\n    },\n    \"dark\": {\n      \"brand\": \"#60A5FA\",\n      \"heading\": \"#f2f2f2\",\n      \"text\": \"#c1c1c1\"\n    }\n  },\n  \"navigation\": {\n    \"tabs\": [\n      {\n        \"tab\": \"Documentation\",\n        \"icon\": \"book\",\n        \"groups\": [\n          {\n            \"group\": \"Getting Started\",\n            \"icon\": \"rocket\",\n            \"pages\": [\n              {\n                \"title\": \"Introduction\",\n                \"path\": \"introduction\",\n                \"icon\": \"star\"\n              },\n              {\n                \"title\": \"Authentication\",\n                \"path\": \"authentication\",\n                \"icon\": \"key\"\n              },\n              {\n                \"title\": \"Content & playback\",\n                \"path\": \"core-video-pipeline\",\n                \"icon\": \"layers\"\n              }\n            ]\n          },\n          {\n            \"group\": \"Video on Demand (VOD)\",\n            \"pages\": [\n              {\n                \"title\": \"Uploading videos\",\n                \"path\": \"vod-uploading-ingesting\",\n                \"icon\": \"upload\"\n              },\n              {\n                \"title\": \"Processing status\",\n                \"path\": \"analytics-overview\",\n                \"icon\": \"server\"\n              },\n              {\n                \"title\": \"Content management\",\n                \"path\": \"vod-metadata-tags\",\n                \"icon\": \"tag\"\n              },\n              {\n                \"title\": \"Playing videos\",\n                \"path\": \"web-sdk-player\",\n                \"icon\": \"play\"\n              }\n            ]\n          },\n          {\n            \"group\": \"Live Streaming\",\n            \"icon\": \"cloud\",\n            \"pages\": [\n              {\n                \"title\": \"Live streaming\",\n                \"path\": \"live-stream-basics\",\n                \"icon\": \"cloud\"\n              },\n              {\n                \"title\": \"Live sessions\",\n                \"path\": \"live-recording-vod\",\n                \"icon\": \"file-text\"\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"tab\": \"API Reference\",\n        \"icon\": \"code\",\n        \"groups\": [\n          {\n            \"group\": \"Videograph API\",\n            \"icon\": \"terminal\",\n            \"openapi\": \"videograph-api.yaml\"\n          },\n          {\n            \"group\": \"Postman API\",\n            \"pages\": [\n              {\n                \"title\": \"Postman API Collection\",\n                \"href\": \"https://www.postman.com/blue-flare-580373/workspace/videograph/collection/19382004-0f270a5d-84d9-4c6c-8ad1-6a7667934604?action=share&creator=19382004\",\n                \"icon\": \"external-link-icon\"\n              }\n            ]\n          }\n        ]\n      },\n      {\n        \"tab\": \"Changelog\",\n        \"icon\": \"clock\",\n        \"pages\": [\n          {\n            \"title\": \"Release History\",\n            \"path\": \"changelog\",\n            \"icon\": \"history\"\n          }\n        ]\n      }\n    ]\n  },\n  \"seo\": {\n    \"robots:index\": false,\n    \"robots:follow\": false,\n    \"sitemap:enabled\": false\n  },\n  \"favicon\": \"https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765187978860-pbi83tni6k-videograph-favicon-32px.png?q=85&fm=auto&auto=compress%2Cformat\",\n  \"navbar\": {\n    \"actions\": {\n      \"primary\": {\n        \"title\": \"Sign in\",\n        \"link\": \"https://dashboard.videograph.ai/signin\"\n      },\n      \"links\": [\n        {\n          \"title\": \"Support\",\n          \"link\": \"mailto:support@videograph.ai\"\n        }\n      ]\n    }\n  },\n  \"logo-dark\": \"https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765187318825-5p4u59roz9-videograph_dark-mode.png?q=85&fm=auto&auto=compress%2Cformat\",\n  \"logo-light\": \"https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765187327833-g49srnemsq-videograph_light-mode.png?q=85&fm=auto&auto=compress%2Cformat\"\n}"
+{
+  "name": "Videograph Documentation",
+  "initialRoute": "introduction",
+  "colors": {
+    "light": {
+      "brand": "#3B82F6",
+      "heading": "#1a1a1a",
+      "text": "#374151"
+    },
+    "dark": {
+      "brand": "#60A5FA",
+      "heading": "#f2f2f2",
+      "text": "#c1c1c1"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "icon": "book",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "icon": "rocket",
+            "pages": [
+              {
+                "title": "Introduction",
+                "path": "introduction",
+                "icon": "star"
+              },
+              {
+                "title": "Authentication",
+                "path": "authentication",
+                "icon": "key"
+              },
+              {
+                "title": "Content & playback",
+                "path": "core-video-pipeline",
+                "icon": "layers"
+              }
+            ]
+          },
+          {
+            "group": "Video on Demand (VOD)",
+            "pages": [
+              {
+                "title": "Uploading videos",
+                "path": "vod-uploading-ingesting",
+                "icon": "upload"
+              },
+              {
+                "title": "Processing status",
+                "path": "analytics-overview",
+                "icon": "server"
+              },
+              {
+                "title": "Content management",
+                "path": "vod-metadata-tags",
+                "icon": "tag"
+              },
+              {
+                "title": "Playing videos",
+                "path": "web-sdk-player",
+                "icon": "play"
+              }
+            ]
+          },
+          {
+            "group": "Live Streaming",
+            "icon": "cloud",
+            "pages": [
+              {
+                "title": "Live streaming",
+                "path": "live-stream-basics",
+                "icon": "cloud"
+              },
+              {
+                "title": "Live sessions",
+                "path": "live-recording-vod",
+                "icon": "file-text"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "icon": "code",
+        "groups": [
+          {
+            "group": "Videograph API",
+            "icon": "terminal",
+            "openapi": "API.yaml"
+          },
+          {
+            "group": "Postman API",
+            "pages": [
+              {
+                "title": "Postman API Collection",
+                "href": "https://www.postman.com/blue-flare-580373/workspace/videograph/collection/19382004-0f270a5d-84d9-4c6c-8ad1-6a7667934604?action=share&creator=19382004",
+                "icon": "external-link-icon"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Changelog",
+        "icon": "clock",
+        "pages": [
+          {
+            "title": "Release History",
+            "path": "changelog",
+            "icon": "history"
+          }
+        ]
+      }
+    ]
+  },
+  "seo": {
+    "robots:index": false,
+    "robots:follow": false,
+    "sitemap:enabled": false
+  },
+  "favicon": "https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765187978860-pbi83tni6k-videograph-favicon-32px.png?q=85&fm=auto&auto=compress%2Cformat",
+  "navbar": {
+    "actions": {
+      "primary": {
+        "title": "Sign in",
+        "link": "https://dashboard.videograph.ai/signin"
+      },
+      "links": [
+        {
+          "title": "Support",
+          "link": "mailto:support@videograph.ai"
+        }
+      ]
+    }
+  },
+  "logo-dark": "https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765187318825-5p4u59roz9-videograph_dark-mode.png?q=85&fm=auto&auto=compress%2Cformat",
+  "logo-light": "https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765187327833-g49srnemsq-videograph_light-mode.png?q=85&fm=auto&auto=compress%2Cformat"
+}
