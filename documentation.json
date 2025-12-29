@@ -89,8 +89,7 @@
         "groups": [
           {
             "group": "Videograph API",
-            "icon": "terminal",
-            "openapi": "videograph-api.yaml"
+            "icon": "terminal"
           },
           {
             "group": "Postman API",
