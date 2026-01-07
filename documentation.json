@@ -118,9 +118,9 @@
     ]
   },
   "seo": {
-    "robots:index": false,
-    "robots:follow": false,
-    "sitemap:enabled": false
+    "robots:index": true,
+    "robots:follow": true,
+    "sitemap:enabled": true
   },
   "favicon": "https://blob-cdn.documentation.ai/org-b713c195-07b6-46aa-b0f6-7e28b1a72b11/doc-dbecd5b1-e16f-4af5-9dff-ae113c6cd9de/1765187978860-pbi83tni6k-videograph-favicon-32px.png?q=85&fm=auto&auto=compress%2Cformat",
   "navbar": {
